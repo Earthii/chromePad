@@ -1,0 +1,11 @@
+#app-container {
+  display: flex;
+  height: 100%;
+}
+app-nav {
+  flex-grow: 0.3;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+app-note {
+  flex-grow: 0.7;
+}
