@@ -1,0 +1,10 @@
+{
+  "name": "chromePad",
+  "version": "1.0",
+  "description":
+    "A chrome extension which allows user to store random notes into the browser",
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "manifest_version": 2
+}
