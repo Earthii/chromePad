@@ -8,7 +8,11 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-`npm run build` will build the prod artifacts
+`npm run build` will build the prod artifacts.
+
+## Install
+
+go to `chrome://extensions/` and click on load unpacked. Navigate to the dist/chromePad folder with the `manifest.json`
 
 ## Running unit tests
 
