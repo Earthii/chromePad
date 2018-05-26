@@ -6,11 +6,8 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./note.component.scss"]
 })
 export class NoteComponent implements OnInit {
-  title = "chromePad";
+  content: String;
   constructor() {}
 
   ngOnInit() {}
-  handleClick() {
-    console.log("hello world");
-  }
 }
