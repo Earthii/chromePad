@@ -1,14 +1,10 @@
 /// <reference types="chrome"/>
 import { Injectable } from "@angular/core";
 
-/**
- * This service is used to call the chrome.storage API,
- * which is a better alternative than the localStorage API
- */
 @Injectable({
   providedIn: "root"
 })
-export class TestServiceService {
+export class ChromeStorageService {
   constructor() {}
 
   storeNote() {
@@ -17,15 +13,11 @@ export class TestServiceService {
     });
   }
 
-  getNote() {
-    chrome.storage.sync.get(["test"], function(result) {
-      console.log("Value currently is " + result.test);
-    });
-  }
-
-  getAllNote() {
-    chrome.storage.sync.get(function(result) {
-      console.log(result);
+  getAllNotes() {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.get(function(result) {
+        resolve(result);
+      });
     });
   }
 

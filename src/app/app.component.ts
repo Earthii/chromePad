@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { TestServiceService } from "./services/test-service.service";
-
+import { ChromeStorageService } from "./services/chrome-storage.service";
 import { Note } from "./models/Note";
 
 @Component({
@@ -10,19 +9,29 @@ import { Note } from "./models/Note";
 })
 export class AppComponent implements OnInit {
   newNote: Note;
-  notes: Note[];
+  notes;
   activeNote: Note;
 
-  constructor(private service: TestServiceService) {
+  constructor(private chromeStorage: ChromeStorageService) {
     this.newNote = null;
     this.notes = [];
-    this.activeNote = null;
+    // TODO: alternative for safe navigation in note.component.html
+    this.activeNote = {
+      name: "Loading",
+      content: "Currently fetching list of notes",
+      id: "LOADING"
+    };
   }
 
   ngOnInit() {
-    // TODO: remove this, and replace with localStorage fetching data
-
-    this.activeNote = this.notes[0];
+    // TODO: introduce observables
+    this.chromeStorage.getAllNotes().then(notes => {
+      this.notes = Object.values(notes);
+      if (this.notes.length === 0) {
+        this.handleAddNote();
+      }
+      this.activeNote = this.notes[0];
+    });
   }
 
   handleViewNote(note: Note) {
@@ -31,7 +40,7 @@ export class AppComponent implements OnInit {
 
   handleAddNote() {
     if (this.newNote == null) {
-      this.newNote = { name: "New Note", content: "" };
+      this.newNote = { name: "New Note", content: "", id: "new" };
       this.notes.unshift(this.newNote);
       this.activeNote = this.newNote;
     }
