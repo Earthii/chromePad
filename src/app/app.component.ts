@@ -15,6 +15,10 @@ export class AppComponent implements OnInit {
   constructor() {
     this.newNote = null;
     this.notes = [];
+    this.activeNote = null;
+  }
+
+  ngOnInit() {
     // TODO: remove this, and replace with localStorage fetching data
     this.notes.push({ name: "note 1", content: "Hello World 1" });
     this.notes.push({ name: "note 2", content: "Hello World 2" });
@@ -25,8 +29,6 @@ export class AppComponent implements OnInit {
     this.notes.push({ name: "note 7", content: "Hello World 7" });
     this.activeNote = this.notes[0];
   }
-
-  ngOnInit() {}
 
   handleViewNote(note: Note) {
     this.activeNote = note;

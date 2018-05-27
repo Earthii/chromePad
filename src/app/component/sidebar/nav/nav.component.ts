@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
+import { Component, Input, EventEmitter, Output } from "@angular/core";
 
 import { Note } from "../../../models/Note";
 
@@ -7,15 +7,13 @@ import { Note } from "../../../models/Note";
   templateUrl: "./nav.component.html",
   styleUrls: ["./nav.component.scss"]
 })
-export class NavComponent implements OnInit {
+export class NavComponent {
   @Input() notes: Note[];
   @Input() activeNote: Note;
 
   @Output() viewNoteEvent: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
-
-  ngOnInit() {}
 
   handleViewNote(note: Note) {
     this.viewNoteEvent.emit(note);

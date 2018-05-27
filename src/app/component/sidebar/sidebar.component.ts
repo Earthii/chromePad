@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 import { Note } from "../../models/Note";
 import { notDeepStrictEqual } from "assert";
@@ -9,7 +9,7 @@ import { NotExpr } from "@angular/compiler";
   templateUrl: "./sidebar.component.html",
   styleUrls: ["./sidebar.component.scss"]
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
   @Input() activeNote: Note;
   @Input() notes: Note[];
 
@@ -17,8 +17,6 @@ export class SidebarComponent implements OnInit {
   @Output() addNoteEvent: EventEmitter<Note> = new EventEmitter();
 
   constructor() {}
-
-  ngOnInit() {}
 
   handleAddNote() {
     this.addNoteEvent.emit();
