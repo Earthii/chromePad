@@ -1,6 +1,6 @@
 <div id="nav-container">
   <ul class="listOfNotes">
-    <li class="note-container" *ngFor="let note of notes">
+    <li class="note-container" [ngClass]="{'activeNote': activeNote == note}" *ngFor="let note of notes">
       <app-preview-note [note]="note" (viewNoteEvent)="handleViewNote($event)"></app-preview-note>
     </li>
   </ul>

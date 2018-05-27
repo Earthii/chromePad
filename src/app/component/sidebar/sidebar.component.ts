@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 
 import { Note } from "../../models/Note";
 import { notDeepStrictEqual } from "assert";
@@ -10,35 +10,21 @@ import { NotExpr } from "@angular/compiler";
   styleUrls: ["./sidebar.component.scss"]
 })
 export class SidebarComponent implements OnInit {
-  notes: Note[];
+  @Input() activeNote: Note;
+  @Input() notes: Note[];
 
-  newNote: Note;
+  @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
+  @Output() addNoteEvent: EventEmitter<Note> = new EventEmitter();
 
-  constructor() {
-    this.notes = [];
-    this.newNote = null;
-  }
+  constructor() {}
 
-  ngOnInit() {
-    // TODO: remove this, and replace with localStorage fetching data
-    this.notes.push({ name: "note 1" });
-    this.notes.push({ name: "note 2" });
-    this.notes.push({ name: "note 3" });
-    this.notes.push({ name: "note 4" });
-    this.notes.push({ name: "note 5" });
-    this.notes.push({ name: "note 6" });
-    this.notes.push({ name: "note 7" });
-  }
+  ngOnInit() {}
 
   handleAddNote() {
-    if (this.newNote == null) {
-      this.newNote = { name: "New Note" };
-      this.notes.unshift(this.newNote);
-    }
+    this.addNoteEvent.emit();
   }
 
   handleViewNote(note: Note) {
-    console.log("Handle view note from sidebar");
-    console.log(note);
+    this.viewNoteEvent.emit(note);
   }
 }

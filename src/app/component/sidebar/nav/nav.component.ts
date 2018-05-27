@@ -9,6 +9,7 @@ import { Note } from "../../../models/Note";
 })
 export class NavComponent implements OnInit {
   @Input() notes: Note[];
+  @Input() activeNote: Note;
 
   @Output() viewNoteEvent: EventEmitter<any> = new EventEmitter();
 
