@@ -4,13 +4,14 @@ import { NgModule } from "@angular/core";
 import { SharedModule } from "./shared.module";
 
 import { NoteComponent } from "./component/note/note.component";
-import { NavComponent } from "./component/nav/nav.component";
+
+import { SidebarModule } from "./component/sidebar/sidebar.module";
 
 import { NgxWigModule } from "ngx-wig";
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, NoteComponent],
-  imports: [SharedModule, NgxWigModule],
+  declarations: [AppComponent, NoteComponent],
+  imports: [SharedModule, SidebarModule, NgxWigModule],
   providers: [],
   bootstrap: [AppComponent]
 })
