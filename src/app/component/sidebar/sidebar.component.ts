@@ -9,4 +9,8 @@ export class SidebarComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  handleAddNote() {
+    console.log("handle add note");
+  }
 }
