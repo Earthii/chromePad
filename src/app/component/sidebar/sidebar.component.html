@@ -1,4 +1,4 @@
 <div id="sidebar-container">
   <app-controls (addNoteEvent)="handleAddNote()"></app-controls>
-  <app-nav [notes]="notes"></app-nav>
+  <app-nav [notes]="notes" (viewNoteEvent)="handleViewNote($event)"></app-nav>
 </div>

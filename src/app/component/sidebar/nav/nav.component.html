@@ -1,7 +1,7 @@
 <div id="nav-container">
   <ul class="listOfNotes">
-    <li class="note-container" *ngFor="let note of notes" (click)="viewNote(note)">
-      <app-preview-note [note]="note"></app-preview-note>
+    <li class="note-container" *ngFor="let note of notes">
+      <app-preview-note [note]="note" (viewNoteEvent)="handleViewNote($event)"></app-preview-note>
     </li>
   </ul>
 </div>

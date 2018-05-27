@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
 
 import { Note } from "../../../models/Note";
 
@@ -10,11 +10,13 @@ import { Note } from "../../../models/Note";
 export class NavComponent implements OnInit {
   @Input() notes: Note[];
 
+  @Output() viewNoteEvent: EventEmitter<any> = new EventEmitter();
+
   constructor() {}
 
   ngOnInit() {}
 
-  viewNote(note: Note) {
-    console.log(note);
+  handleViewNote(note: Note) {
+    this.viewNoteEvent.emit(note);
   }
 }

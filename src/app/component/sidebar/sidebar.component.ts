@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 
 import { Note } from "../../models/Note";
+import { notDeepStrictEqual } from "assert";
+import { NotExpr } from "@angular/compiler";
 
 @Component({
   selector: "app-sidebar",
@@ -33,5 +35,10 @@ export class SidebarComponent implements OnInit {
       this.newNote = { name: "New Note" };
       this.notes.unshift(this.newNote);
     }
+  }
+
+  handleViewNote(note: Note) {
+    console.log("Handle view note from sidebar");
+    console.log(note);
   }
 }
