@@ -1,0 +1,15 @@
+#nav-container {
+  height: calc(100% - 31px);
+}
+.listOfNotes {
+  height: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;
+
+  .note-container {
+    height: 80px;
+    cursor: pointer;
+  }
+}

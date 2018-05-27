@@ -13,4 +13,8 @@ export class NavComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  viewNote(note: Note) {
+    console.log(note);
+  }
 }

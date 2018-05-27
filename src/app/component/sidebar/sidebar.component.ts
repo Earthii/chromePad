@@ -23,6 +23,9 @@ export class SidebarComponent implements OnInit {
     this.notes.push({ name: "note 2" });
     this.notes.push({ name: "note 3" });
     this.notes.push({ name: "note 4" });
+    this.notes.push({ name: "note 5" });
+    this.notes.push({ name: "note 6" });
+    this.notes.push({ name: "note 7" });
   }
 
   handleAddNote() {
