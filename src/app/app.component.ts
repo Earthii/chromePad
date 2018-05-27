@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
     if (this.newNote == null) {
       this.newNote = { name: "New Note", content: "" };
       this.notes.unshift(this.newNote);
+      this.activeNote = this.newNote;
     }
   }
 
