@@ -1,9 +1,7 @@
 <div id="nav-container">
   <ul>
     <li *ngFor="let note of notes">
-      <span>
-        {{note.name}}
-      </span>
+      <app-preview-note [note]="note"></app-preview-note>
     </li>
   </ul>
 </div>

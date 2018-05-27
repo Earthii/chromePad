@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO: remove this, and replace with localStorage fetching data
     this.notes.push({ name: "note 1" });
     this.notes.push({ name: "note 2" });
     this.notes.push({ name: "note 3" });
@@ -25,9 +26,8 @@ export class SidebarComponent implements OnInit {
   }
 
   handleAddNote() {
-    console.log("handle add note");
     if (this.newNote == null) {
-      this.newNote = { name: "" };
+      this.newNote = { name: "New Note" };
       this.notes.unshift(this.newNote);
     }
   }
