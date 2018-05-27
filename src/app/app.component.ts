@@ -29,8 +29,9 @@ export class AppComponent implements OnInit {
       this.notes = Object.values(notes);
       if (this.notes.length === 0) {
         this.handleAddNote();
+      } else {
+        this.activeNote = this.notes[0];
       }
-      this.activeNote = this.notes[0];
     });
   }
 
@@ -40,11 +41,22 @@ export class AppComponent implements OnInit {
 
   handleAddNote() {
     if (this.newNote == null) {
-      this.newNote = { name: "New Note", content: "", id: "new" };
-      this.notes.unshift(this.newNote);
-      this.activeNote = this.newNote;
+      this.newNote = { name: "New Note", content: "", id: "NEW" };
+      this.notes.unshift(Object.assign({}, this.newNote));
+      this.activeNote = this.notes[0];
     }
   }
 
-  handleUpdateNote(note: Note) {}
+  handleUpdateNote(note: Note) {
+    // TODO: fix work around, ngx-wig contentChange event is fired when it shouldn't
+    if (note.id === "NEW") {
+      if (note.content !== "") {
+        note.id = this.chromeStorage.generateNoteUuid();
+      }
+    }
+
+    if (note.id !== "NEW" && note.id !== "LOADING") {
+      this.chromeStorage.storeNote(note);
+    }
+  }
 }

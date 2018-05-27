@@ -10,7 +10,11 @@ export class NoteComponent {
   @Input() activeNote: Note;
   @Output() updateNoteEvent: EventEmitter<Note> = new EventEmitter();
 
-  updateNote() {
-    this.updateNoteEvent.emit(this.activeNote);
+  updateNote(event) {
+    // TODO: if statement avoids ExpressionChangedAfterItHasBeenCheckedError
+    if (this.activeNote.id !== "LOADING") {
+      this.activeNote.content = event;
+      this.updateNoteEvent.emit(this.activeNote);
+    }
   }
 }

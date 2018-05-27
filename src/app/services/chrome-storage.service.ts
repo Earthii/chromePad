@@ -1,5 +1,7 @@
 /// <reference types="chrome"/>
+
 import { Injectable } from "@angular/core";
+import { v4 as uuid } from "uuid";
 
 @Injectable({
   providedIn: "root"
@@ -7,10 +9,10 @@ import { Injectable } from "@angular/core";
 export class ChromeStorageService {
   constructor() {}
 
-  storeNote() {
-    chrome.storage.sync.set({ test: "a" }, function() {
-      console.log("Value is set to " + "a");
-    });
+  storeNote(note) {
+    const chromeNoteObj = {};
+    chromeNoteObj[note.id] = note;
+    chrome.storage.sync.set(chromeNoteObj, function() {});
   }
 
   getAllNotes() {
@@ -25,5 +27,9 @@ export class ChromeStorageService {
     chrome.storage.sync.remove("test", function() {
       console.log("removed");
     });
+  }
+
+  generateNoteUuid() {
+    return uuid();
   }
 }
