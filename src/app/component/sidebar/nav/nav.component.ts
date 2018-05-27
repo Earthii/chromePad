@@ -11,11 +11,16 @@ export class NavComponent {
   @Input() notes: Note[];
   @Input() activeNote: Note;
 
-  @Output() viewNoteEvent: EventEmitter<any> = new EventEmitter();
+  @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
+  @Output() removeNoteEvent: EventEmitter<Note> = new EventEmitter();
 
   constructor() {}
 
   handleViewNote(note: Note) {
     this.viewNoteEvent.emit(note);
+  }
+
+  handleRemoveNote(note: Note) {
+    this.removeNoteEvent.emit(note);
   }
 }

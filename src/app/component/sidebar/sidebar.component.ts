@@ -15,6 +15,7 @@ export class SidebarComponent {
 
   @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
   @Output() addNoteEvent: EventEmitter<Note> = new EventEmitter();
+  @Output() removeNoteEvent: EventEmitter<Note> = new EventEmitter();
 
   constructor() {}
 
@@ -24,5 +25,9 @@ export class SidebarComponent {
 
   handleViewNote(note: Note) {
     this.viewNoteEvent.emit(note);
+  }
+
+  handleRemoveNote(note: Note) {
+    this.removeNoteEvent.emit(note);
   }
 }

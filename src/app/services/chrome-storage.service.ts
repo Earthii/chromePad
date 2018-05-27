@@ -2,6 +2,7 @@
 
 import { Injectable } from "@angular/core";
 import { v4 as uuid } from "uuid";
+import { Note } from "../models/Note";
 
 @Injectable({
   providedIn: "root"
@@ -23,9 +24,9 @@ export class ChromeStorageService {
     });
   }
 
-  removeNote() {
-    chrome.storage.sync.remove("test", function() {
-      console.log("removed");
+  removeNote(note: Note) {
+    chrome.storage.sync.remove(note.id, function() {
+      console.log("removed " + note.id);
     });
   }
 

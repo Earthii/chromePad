@@ -8,11 +8,18 @@ import { Note } from "../../../../models/Note";
 })
 export class PreviewNoteComponent {
   @Input() note: Note;
+  @Input() active: Boolean;
 
-  @Output() viewNoteEvent: EventEmitter<any> = new EventEmitter();
+  @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
+  @Output() removeNoteEvent: EventEmitter<Note> = new EventEmitter();
+
   constructor() {}
 
   viewNote() {
     this.viewNoteEvent.emit(this.note);
+  }
+
+  removeNote() {
+    this.removeNoteEvent.emit(this.note);
   }
 }

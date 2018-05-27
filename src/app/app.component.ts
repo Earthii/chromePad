@@ -9,7 +9,7 @@ import { Note } from "./models/Note";
 })
 export class AppComponent implements OnInit {
   newNote: Note;
-  notes;
+  notes: Note[];
   activeNote: Note;
 
   constructor(private chromeStorage: ChromeStorageService) {
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
 
   handleViewNote(note: Note) {
     this.activeNote = note;
+    console.log("View: " + note.id);
   }
 
   handleAddNote() {
@@ -57,6 +58,21 @@ export class AppComponent implements OnInit {
 
     if (note.id !== "NEW" && note.id !== "LOADING") {
       this.chromeStorage.storeNote(note);
+      this.newNote = null;
     }
+  }
+
+  handleRemoveNote(note: Note) {
+    this.notes = this.notes.filter(item => {
+      return item.id !== note.id || item.id === "NEW";
+    });
+    this.chromeStorage.removeNote(note);
+
+    if (this.notes.length === 0) {
+      this.handleAddNote();
+    } else {
+      this.activeNote = this.notes[0];
+    }
+    console.log(this.notes);
   }
 }
