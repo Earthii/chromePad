@@ -13,7 +13,6 @@ export class ControlsComponent implements OnInit {
   ngOnInit() {}
 
   addNote() {
-    console.log("add note");
     this.addNoteEvent.emit();
   }
 }
