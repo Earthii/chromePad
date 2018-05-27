@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { TestServiceService } from "./services/test-service.service";
 
 import { Note } from "./models/Note";
 
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   notes: Note[];
   activeNote: Note;
 
-  constructor() {
+  constructor(private service: TestServiceService) {
     this.newNote = null;
     this.notes = [];
     this.activeNote = null;
@@ -20,10 +21,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // TODO: remove this, and replace with localStorage fetching data
-    this.notes.push({ name: "note 1", content: "Hello World 1" });
-    this.notes.push({ name: "note 2", content: "Hello World 2" });
-    this.notes.push({ name: "note 3", content: "Hello World 3" });
-    this.notes.push({ name: "note 4", content: "Hello World 4" });
 
     this.activeNote = this.notes[0];
   }
@@ -40,7 +37,5 @@ export class AppComponent implements OnInit {
     }
   }
 
-  handleUpdateNote(note: Note) {
-    console.log(note);
-  }
+  handleUpdateNote(note: Note) {}
 }

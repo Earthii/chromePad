@@ -9,10 +9,12 @@ import { SidebarModule } from "./component/sidebar/sidebar.module";
 
 import { NgxWigModule } from "ngx-wig";
 
+import { TestServiceService } from "./services/test-service.service";
+
 @NgModule({
   declarations: [AppComponent, NoteComponent],
   imports: [SharedModule, SidebarModule, NgxWigModule],
-  providers: [],
+  providers: [TestServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
