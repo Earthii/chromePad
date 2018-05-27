@@ -10,6 +10,16 @@
 
   .note-container {
     height: 80px;
+    border-collapse: collapse;
     cursor: pointer;
+    border-color: rgba(0, 0, 0, 0.2);
+    border-style: solid;
+    border-width: 0.5px 0px 0.5px 0px;
+  }
+  .note-container:first-child {
+    border-top: none;
+  }
+  .note-container:last-child {
+    border-bottom: none;
   }
 }
