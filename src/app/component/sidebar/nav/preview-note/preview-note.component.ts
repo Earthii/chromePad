@@ -12,6 +12,7 @@ export class PreviewNoteComponent {
 
   @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
   @Output() removeNoteEvent: EventEmitter<Note> = new EventEmitter();
+  @Output() changeNoteNameEvent: EventEmitter<Note> = new EventEmitter();
 
   constructor() {}
 
@@ -21,5 +22,10 @@ export class PreviewNoteComponent {
 
   removeNote() {
     this.removeNoteEvent.emit(this.note);
+  }
+
+  changeNoteName(newName) {
+    this.note.name = newName;
+    this.changeNoteNameEvent.emit(this.note);
   }
 }

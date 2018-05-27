@@ -64,15 +64,30 @@ export class AppComponent implements OnInit {
 
   handleRemoveNote(note: Note) {
     this.notes = this.notes.filter(item => {
-      return item.id !== note.id || item.id === "NEW";
+      if (this.notes.length === 1) {
+        return item.id !== note.id || item.id === "NEW";
+      } else {
+        if (item.id === "NEW") {
+          this.newNote = null;
+        }
+        return item.id !== note.id;
+      }
     });
-    this.chromeStorage.removeNote(note);
 
+    this.chromeStorage.removeNote(note);
+    console.log(this.notes);
     if (this.notes.length === 0) {
       this.handleAddNote();
     } else {
       this.activeNote = this.notes[0];
     }
-    console.log(this.notes);
+  }
+
+  handleChangeNoteName(note: Note) {
+    if (note.id === "NEW") {
+      this.newNote = null;
+    }
+    note.id = this.chromeStorage.generateNoteUuid();
+    this.handleUpdateNote(note);
   }
 }

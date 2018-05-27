@@ -13,6 +13,7 @@ export class NavComponent {
 
   @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
   @Output() removeNoteEvent: EventEmitter<Note> = new EventEmitter();
+  @Output() changeNoteNameEvent: EventEmitter<Note> = new EventEmitter();
 
   constructor() {}
 
@@ -22,5 +23,9 @@ export class NavComponent {
 
   handleRemoveNote(note: Note) {
     this.removeNoteEvent.emit(note);
+  }
+
+  handleChangeNoteName(note: Note) {
+    this.changeNoteNameEvent.emit(note);
   }
 }
