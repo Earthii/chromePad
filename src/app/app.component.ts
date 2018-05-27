@@ -24,9 +24,7 @@ export class AppComponent implements OnInit {
     this.notes.push({ name: "note 2", content: "Hello World 2" });
     this.notes.push({ name: "note 3", content: "Hello World 3" });
     this.notes.push({ name: "note 4", content: "Hello World 4" });
-    this.notes.push({ name: "note 5", content: "Hello World 5" });
-    this.notes.push({ name: "note 6", content: "Hello World 6" });
-    this.notes.push({ name: "note 7", content: "Hello World 7" });
+
     this.activeNote = this.notes[0];
   }
 
