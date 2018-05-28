@@ -1,5 +1,5 @@
 <div id="app-container">
   <app-sidebar (viewNoteEvent)="handleViewNote($event)" (addNoteEvent)="handleAddNote()" (removeNoteEvent)="handleRemoveNote($event)"
-    (changeNoteNameEvent)="handleChangeNoteName($event)" [notes]="notes" [activeNote]="activeNote"></app-sidebar>
+    (changeNoteNameEvent)="handleChangeNoteName($event)" (searchNoteEvent)="handleSearchNote($event)" [notes]="notes" [activeNote]="activeNote"></app-sidebar>
   <app-note [activeNote]="activeNote" (updateNoteEvent)="handleUpdateNote($event)"></app-note>
 </div>

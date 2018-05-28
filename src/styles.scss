@@ -10,7 +10,9 @@ body {
   height: 100%;
   margin: 0;
 }
-
+input[type="text"] {
+  outline: none;
+}
 ngx-wig {
   .ng-wig {
     height: 100%;

@@ -2,9 +2,16 @@
   height: 30px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   display: flex;
-  flex-direction: row-reverse;
 
   .add-btn {
-    margin-right: 5px;
+    padding: 3px;
+    font-size: 18px;
+  }
+  .add-btn:hover {
+    font-size: 20px;
+  }
+  .searchBox {
+    margin: 3px;
+    width: 100%;
   }
 }

@@ -57,6 +57,7 @@ export class AppComponent implements OnInit {
     }
 
     if (note.id !== "NEW" && note.id !== "LOADING") {
+      this.buildPreviewMsg(note);
       this.chromeStorage.storeNote(note);
       this.newNote = null;
     }
@@ -92,6 +93,23 @@ export class AppComponent implements OnInit {
       this.handleAddNote();
     } else {
       this.activeNote = this.notes[0];
+    }
+  }
+
+  handleSearchNote(query: string) {
+    console.log(query);
+  }
+
+  private buildPreviewMsg(note: Note) {
+    // keep only the first 50 characters for preview
+    const previewMsg = note.content.substring(0, 50);
+    if (previewMsg !== "") {
+      note.preview = previewMsg;
+      if (previewMsg.length === 50) {
+        note.preview += " ...";
+      }
+    } else {
+      note.preview = "";
     }
   }
 }

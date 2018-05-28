@@ -1,6 +1,7 @@
 <div id="preview-note-container" (click)="viewNote()">
   <div class="note-info-container">
-    <input type="text" [value]="note.name" (blur)="changeNoteName($event.target.value)" />
+    <input type="text" class="noteNameInput" [value]="note.name" (change)="changeNoteName($event.target.value)" />
+    <span class="notePreview">{{note.preview}}</span>
   </div>
   <div *ngIf="active" class="controls-container">
     <i class="remove-btn mdi mdi-close-circle-outline" (click)="removeNote()"></i>
