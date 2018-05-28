@@ -1,6 +1,7 @@
 <div id="nav-container">
   <ul class="listOfNotes">
-    <li class="note-container" [ngClass]="{'activeNote': activeNote == note}" *ngFor="let note of notes">
+    <li class="note-container" [ngClass]="{'newNote': note.id === 'NEW' && activeNote == note,'activeNote': activeNote == note}"
+      *ngFor="let note of notes">
       <app-preview-note [note]="note" [active]="activeNote === note" (viewNoteEvent)="handleViewNote($event)" (removeNoteEvent)="handleRemoveNote($event)"
         (changeNoteNameEvent)="handleChangeNoteName($event)"></app-preview-note>
     </li>

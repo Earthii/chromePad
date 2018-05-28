@@ -63,24 +63,20 @@ export class AppComponent implements OnInit {
   }
 
   handleRemoveNote(note: Note) {
-    this.notes = this.notes.filter(item => {
+    if (note.id === "NEW") {
+      // Do not remove NEW if there is only NEW
       if (this.notes.length === 1) {
-        return item.id !== note.id || item.id === "NEW";
+        return;
       } else {
-        if (item.id === "NEW") {
-          this.newNote = null;
-        }
-        return item.id !== note.id;
+        this.newNote = null;
       }
-    });
+    }
+
+    this.notes = this.notes.filter(item => item.id !== note.id);
 
     this.chromeStorage.removeNote(note);
-    console.log(this.notes);
-    if (this.notes.length === 0) {
-      this.handleAddNote();
-    } else {
-      this.activeNote = this.notes[0];
-    }
+
+    this.changeToDefaultActiveNote();
   }
 
   handleChangeNoteName(note: Note) {
@@ -89,5 +85,13 @@ export class AppComponent implements OnInit {
     }
     note.id = this.chromeStorage.generateNoteUuid();
     this.handleUpdateNote(note);
+  }
+
+  private changeToDefaultActiveNote() {
+    if (this.notes.length === 0) {
+      this.handleAddNote();
+    } else {
+      this.activeNote = this.notes[0];
+    }
   }
 }
