@@ -2,8 +2,9 @@
   "name": "chromePad",
   "version": "1.0",
   "description":
-    "A chrome extension which allows user to store random notes into the browser",
+    "A chrome extension which allows user to store notes into the browser. This is powered by an rich text editor and can store multiple notes",
   "browser_action": {
+    "default_icon": "assets/icon.png",
     "default_popup": "index.html"
   },
   "content_security_policy":
