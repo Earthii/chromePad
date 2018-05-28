@@ -129,7 +129,12 @@ export class AppComponent implements OnInit {
 
   private buildPreviewMsg(note: Note) {
     // keep only the first 50 characters for preview
-    const previewMsg = note.content.substring(0, 50);
+    const removeHtmlRegex = /<[^>]*>?/g;
+    const contentFormatLists = note.content.replace(/<\/li>/g, ' ') ;
+    const contentStripedOfHtml = contentFormatLists.replace(removeHtmlRegex, '');
+    const contentStripedOfNbsp = contentStripedOfHtml.replace(/&nbsp;/g, ' ');
+    const previewMsg = contentStripedOfNbsp.substring(0, 50);
+
     if (previewMsg !== "") {
       note.preview = previewMsg;
       if (previewMsg.length === 50) {
