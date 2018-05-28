@@ -1,5 +1,11 @@
 # ChromePad
 
+chromePad is a chrome extension which enables users to take notes through chrome.
+
+People are no longer required to open up a word file, a text file, etc to take simple notes.
+
+This extensions allows you to save you quick notes in an extension.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
