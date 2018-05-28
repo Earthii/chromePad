@@ -10,7 +10,9 @@ import { Note } from "./models/Note";
 export class AppComponent implements OnInit {
   newNote: Note;
   notes: Note[];
+  notesCache: Note[];
   activeNote: Note;
+  searchingState: Boolean;
 
   constructor(private chromeStorage: ChromeStorageService) {
     this.newNote = null;
@@ -27,6 +29,7 @@ export class AppComponent implements OnInit {
     // TODO: introduce observables
     this.chromeStorage.getAllNotes().then(notes => {
       this.notes = Object.values(notes);
+      this.notesCache = this.notes;
       if (this.notes.length === 0) {
         this.handleAddNote();
       } else {
@@ -44,6 +47,7 @@ export class AppComponent implements OnInit {
     if (this.newNote == null) {
       this.newNote = { name: "New Note", content: "", id: "NEW" };
       this.notes.unshift(Object.assign({}, this.newNote));
+      this.notesCache = this.notes;
       this.activeNote = this.notes[0];
     }
   }
@@ -74,7 +78,7 @@ export class AppComponent implements OnInit {
     }
 
     this.notes = this.notes.filter(item => item.id !== note.id);
-
+    this.notesCache = this.notes;
     this.chromeStorage.removeNote(note);
 
     this.changeToDefaultActiveNote();
@@ -83,9 +87,36 @@ export class AppComponent implements OnInit {
   handleChangeNoteName(note: Note) {
     if (note.id === "NEW") {
       this.newNote = null;
+      note.id = this.chromeStorage.generateNoteUuid();
     }
-    note.id = this.chromeStorage.generateNoteUuid();
     this.handleUpdateNote(note);
+  }
+
+  handleSearchNote(query: string) {
+    this.notes = this.notesCache;
+    if (query !== "") {
+      this.searchingState = true;
+      this.notes = this.notes.filter(item => {
+        const inName = item.name.includes(query);
+        const inContent = item.content.includes(query);
+        return inName || inContent;
+      });
+
+      this.activeNote = this.notes[0];
+
+      if (!this.activeNote) {
+        console.log("No search results found");
+        if (this.notesCache[0].id !== "NEW" && this.notesCache.length > 1) {
+          this.newNote = { name: "New Note", content: "", id: "NEW" };
+          this.notesCache.unshift(this.newNote);
+        }
+        this.notes.push(this.notesCache[0]);
+        this.activeNote = this.notes[0];
+      }
+    } else {
+      this.searchingState = false;
+      this.activeNote = this.notes[0];
+    }
   }
 
   private changeToDefaultActiveNote() {
@@ -94,10 +125,6 @@ export class AppComponent implements OnInit {
     } else {
       this.activeNote = this.notes[0];
     }
-  }
-
-  handleSearchNote(query: string) {
-    console.log(query);
   }
 
   private buildPreviewMsg(note: Note) {
