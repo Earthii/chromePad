@@ -2,7 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { Note } from "./models/Note";
 
 import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.service";
+import { LocalStorageService } from "./services/local-storage/local-storage.service";
 import { NoteManipulationService } from "./services/note-manipulation/note-manipulation.service";
+import { __core_private_testing_placeholder__ } from "@angular/core/testing";
 
 @Component({
   selector: "app-root",
@@ -11,17 +13,19 @@ import { NoteManipulationService } from "./services/note-manipulation/note-manip
 })
 export class AppComponent implements OnInit {
   newNote: Note;
-  notes: Note[];
+  notesInSideBar: Note[];
   notesCache: Note[];
   activeNote: Note;
   searchingState: Boolean;
 
   constructor(
     private chromeStorage: ChromeStorageService,
+    private localStorageCache: LocalStorageService,
     private noteManipulationService: NoteManipulationService
   ) {
     this.newNote = null;
-    this.notes = [];
+    this.notesInSideBar = [];
+    this.searchingState = false;
     // TODO: alternative for safe navigation in note.component.html
     this.activeNote = {
       name: "Loading",
@@ -33,12 +37,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // TODO: introduce observables
     this.chromeStorage.getAllNotes().then(notes => {
-      this.notes = Object.values(notes);
-      this.notesCache = this.notes;
-      if (this.notes.length === 0) {
+      this.notesInSideBar = Object.values(notes);
+      this.setNotesCache(this.notesInSideBar);
+      if (this.notesInSideBar.length === 0) {
         this.handleAddNote();
       } else {
-        this.activeNote = this.notes[0];
+        this.activeNote = this.notesInSideBar[0];
       }
     });
   }
@@ -51,9 +55,9 @@ export class AppComponent implements OnInit {
   handleAddNote() {
     if (this.newNote == null) {
       this.newNote = { name: "New Note", content: "", id: "NEW" };
-      this.notes.unshift(Object.assign({}, this.newNote));
-      this.notesCache = this.notes;
-      this.activeNote = this.notes[0];
+      this.notesInSideBar.unshift(Object.assign({}, this.newNote));
+      this.setNotesCache(this.notesInSideBar);
+      this.activeNote = this.notesInSideBar[0];
     }
   }
 
@@ -67,7 +71,8 @@ export class AppComponent implements OnInit {
 
     if (note.id !== "NEW" && note.id !== "LOADING") {
       this.noteManipulationService.buildPreviewMessage(note);
-      this.chromeStorage.storeNote(note);
+      // this.chromeStorage.storeNote(note);
+      this.localStorageCache.cache(this.notesCache);
       this.newNote = null;
     }
   }
@@ -75,15 +80,17 @@ export class AppComponent implements OnInit {
   handleRemoveNote(note: Note) {
     if (note.id === "NEW") {
       // Do not remove NEW if there is only NEW
-      if (this.notes.length === 1) {
+      if (this.notesInSideBar.length === 1) {
         return;
       } else {
         this.newNote = null;
       }
     }
 
-    this.notes = this.notes.filter(item => item.id !== note.id);
-    this.notesCache = this.notes;
+    this.notesInSideBar = this.notesInSideBar.filter(
+      item => item.id !== note.id
+    );
+    this.setNotesCache(this.notesInSideBar);
     this.chromeStorage.removeNote(note);
 
     this.changeToDefaultActiveNote();
@@ -98,16 +105,16 @@ export class AppComponent implements OnInit {
   }
 
   handleSearchNote(query: string) {
-    this.notes = this.notesCache;
+    this.notesInSideBar = this.notesCache;
     if (query !== "") {
       this.searchingState = true;
-      this.notes = this.notes.filter(item => {
+      this.notesInSideBar = this.notesInSideBar.filter(item => {
         const inName = item.name.includes(query);
         const inContent = item.content.includes(query);
         return inName || inContent;
       });
 
-      this.activeNote = this.notes[0];
+      this.activeNote = this.notesInSideBar[0];
 
       if (!this.activeNote) {
         console.log("No search results found");
@@ -115,20 +122,31 @@ export class AppComponent implements OnInit {
           this.newNote = { name: "New Note", content: "", id: "NEW" };
           this.notesCache.unshift(this.newNote);
         }
-        this.notes.push(this.notesCache[0]);
-        this.activeNote = this.notes[0];
+        this.notesInSideBar.push(this.notesCache[0]);
+        this.activeNote = this.notesInSideBar[0];
       }
     } else {
       this.searchingState = false;
-      this.activeNote = this.notes[0];
+      this.activeNote = this.notesInSideBar[0];
     }
   }
 
   private changeToDefaultActiveNote() {
-    if (this.notes.length === 0) {
+    if (this.notesInSideBar.length === 0) {
       this.handleAddNote();
     } else {
-      this.activeNote = this.notes[0];
+      this.activeNote = this.notesInSideBar[0];
     }
+  }
+
+  private setNotesCache(notes: Note[]) {
+    this.notesCache = notes;
+    const notesToCacheToLocalStorage = Object.assign([], this.notesCache);
+    if (notesToCacheToLocalStorage.length > 0) {
+      if (notesToCacheToLocalStorage[0].id === "NEW") {
+        notesToCacheToLocalStorage.shift();
+      }
+    }
+    this.localStorageCache.cache(notesToCacheToLocalStorage);
   }
 }
