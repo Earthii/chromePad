@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { ChromeStorageService } from "./services/chrome-storage.service";
 import { Note } from "./models/Note";
+
+import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.service";
+import { StripHtmlService } from "./services/strip-html/strip-html.service";
 
 @Component({
   selector: "app-root",
@@ -14,7 +16,10 @@ export class AppComponent implements OnInit {
   activeNote: Note;
   searchingState: Boolean;
 
-  constructor(private chromeStorage: ChromeStorageService) {
+  constructor(
+    private chromeStorage: ChromeStorageService,
+    private stripHtmlService: StripHtmlService
+  ) {
     this.newNote = null;
     this.notes = [];
     // TODO: alternative for safe navigation in note.component.html
@@ -129,10 +134,10 @@ export class AppComponent implements OnInit {
 
   private buildPreviewMsg(note: Note) {
     // keep only the first 50 characters for preview
-    const removeHtmlRegex = /<[^>]*>?/g;
-    const contentFormatLists = note.content.replace(/<\/li>/g, ' ') ;
-    const contentStripedOfHtml = contentFormatLists.replace(removeHtmlRegex, '');
-    const contentStripedOfNbsp = contentStripedOfHtml.replace(/&nbsp;/g, ' ');
+
+    const contentStripedOfNbsp = this.stripHtmlService.removeHtmlFromString(
+      note.content
+    );
     const previewMsg = contentStripedOfNbsp.substring(0, 50);
 
     if (previewMsg !== "") {
