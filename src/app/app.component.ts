@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Note } from "./models/Note";
 
 import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.service";
-import { StripHtmlService } from "./services/strip-html/strip-html.service";
+import { NoteManipulationService } from "./services/note-manipulation/note-manipulation.service";
 
 @Component({
   selector: "app-root",
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private chromeStorage: ChromeStorageService,
-    private stripHtmlService: StripHtmlService
+    private noteManipulationService: NoteManipulationService
   ) {
     this.newNote = null;
     this.notes = [];
@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
     }
 
     if (note.id !== "NEW" && note.id !== "LOADING") {
-      this.buildPreviewMsg(note);
+      this.noteManipulationService.buildPreviewMessage(note);
       this.chromeStorage.storeNote(note);
       this.newNote = null;
     }
@@ -129,24 +129,6 @@ export class AppComponent implements OnInit {
       this.handleAddNote();
     } else {
       this.activeNote = this.notes[0];
-    }
-  }
-
-  private buildPreviewMsg(note: Note) {
-    // keep only the first 50 characters for preview
-
-    const contentStripedOfNbsp = this.stripHtmlService.removeHtmlFromString(
-      note.content
-    );
-    const previewMsg = contentStripedOfNbsp.substring(0, 50);
-
-    if (previewMsg !== "") {
-      note.preview = previewMsg;
-      if (previewMsg.length === 50) {
-        note.preview += " ...";
-      }
-    } else {
-      note.preview = "";
     }
   }
 }
