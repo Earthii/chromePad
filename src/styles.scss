@@ -13,36 +13,24 @@ body {
 input[type="text"] {
   outline: none;
 }
-ngx-wig {
-  .ng-wig {
-    height: 100%;
-    .nw-toolbar {
-      border-left: none;
-      border-top: none;
-      border-right: none;
-    }
-    .nw-editor-container {
-      height: calc(100% - 31px);
-      border: none;
-      /* These are technically the same, but use both */
-      overflow-wrap: break-word;
-      word-wrap: break-word;
+quill-editor {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
-      -ms-word-break: break-all;
-      /* This is the dangerous one in WebKit, as it breaks things wherever */
-      word-break: break-all;
-      /* Instead use this non-standard one: */
-      word-break: break-word;
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
 
-      /* Adds a hyphen where the word breaks, if supported (No Blink) */
-      -ms-hyphens: auto;
-      -moz-hyphens: auto;
-      -webkit-hyphens: auto;
-      hyphens: auto;
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 
-      .nw-editor {
-        height: 100%;
-      }
-    }
+  .ql-container {
+    height: 84%;
   }
 }

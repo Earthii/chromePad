@@ -58,7 +58,6 @@ export class AppComponent implements OnInit {
   }
 
   handleUpdateNote(note: Note) {
-    // TODO: fix work around, ngx-wig contentChange event is fired when it shouldn't
     if (note.id === "NEW") {
       if (note.content !== "") {
         note.id = this.chromeStorage.generateNoteUuid();
