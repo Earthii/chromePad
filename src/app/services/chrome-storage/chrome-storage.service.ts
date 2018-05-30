@@ -13,6 +13,7 @@ export class ChromeStorageService {
   storeNote(note) {
     const chromeNoteObj = {};
     chromeNoteObj[note.id] = note;
+    console.log("call to chrome storage");
     chrome.storage.sync.set(chromeNoteObj, function() {});
   }
 

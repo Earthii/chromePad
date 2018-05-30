@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     // TODO: alternative for safe navigation in note.component.html
     this.activeNote = {
       name: "Loading",
-      content: "Currently fetching list of notes",
+      content: "",
       id: "LOADING"
     };
   }

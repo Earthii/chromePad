@@ -10,6 +10,14 @@ export class NoteComponent {
   @Input() activeNote: Note;
   @Output() updateNoteEvent: EventEmitter<Note> = new EventEmitter();
 
+  typingTimeOut;
+  userTyping: Boolean = false;
+
+  constructor() {
+    this.typingTimeOut = undefined;
+    this.userTyping = false;
+  }
+
   editorModules = {
     toolbar: [
       ["bold", "italic", "underline", "strike"],
@@ -29,16 +37,19 @@ export class NoteComponent {
   updateNote(event) {
     // TODO: if statement avoids ExpressionChangedAfterItHasBeenCheckedError
     if (this.activeNote.id !== "LOADING") {
+      this.userTyping = true;
       if (event.html === null) {
         this.activeNote.content = "";
       } else {
         this.activeNote.content = event.html;
       }
-      this.updateNoteEvent.emit(this.activeNote);
+      if (this.typingTimeOut !== undefined) {
+        clearTimeout(this.typingTimeOut);
+      }
+      this.typingTimeOut = setTimeout(() => {
+        this.updateNoteEvent.emit(this.activeNote);
+        this.userTyping = false;
+      }, 400);
     }
-  }
-
-  logSelection(event) {
-    console.log(event);
   }
 }

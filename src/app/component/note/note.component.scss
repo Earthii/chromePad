@@ -1,4 +1,12 @@
 #note-container {
   width: 100%;
   height: 100%;
+  .typing-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 5px;
+    font-size: 18px;
+    color: #ccc;
+  }
 }
