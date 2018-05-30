@@ -2,7 +2,6 @@
 html {
   width: 800px;
   height: 400px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 body {
@@ -29,8 +28,12 @@ quill-editor {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-
+  .ql-toolbar {
+    border: none !important;
+    border-bottom: 1px solid #ccc !important;
+  }
   .ql-container {
     height: 84%;
+    border: none !important;
   }
 }

@@ -1,8 +1,9 @@
 {
   "name": "chromePad",
+  "short_name": "chromePad",
   "version": "1.0.2",
   "description":
-    "A chrome extension which allows user to store notes into the browser. This is powered by an rich text editor and can store multiple notes",
+    "A chrome extension enables users to sync their notes to chrome. App oowered by an rich text editor",
   "browser_action": {
     "default_icon": "assets/icon.png",
     "default_popup": "index.html"
