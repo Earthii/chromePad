@@ -1,6 +1,7 @@
 <div id="preview-note-container" (click)="viewNote()">
   <div class="note-info-container">
-    <input type="text" class="noteNameInput" [value]="note.name" (input)="changeNoteName($event.target.value)" />
+    <input type="text" class="noteNameInput" [value]="note.name" (input)="changeNoteName($event.target.value)" placeholder="New Note"
+    />
     <div class="notePreview">
       <span class="notePreviewText" *ngIf="(note.content | stripHtml) as htmlFreeContent">
         {{ htmlFreeContent.length > 50 ? (htmlFreeContent | slice:0:50)+' ...' : htmlFreeContent }}

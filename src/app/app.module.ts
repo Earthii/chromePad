@@ -11,7 +11,7 @@ import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.s
 import { SearchNotePipe } from "./pipes/search-note/search-note.pipe";
 
 @NgModule({
-  declarations: [AppComponent, NoteComponent],
+  declarations: [AppComponent, NoteComponent, SearchNotePipe],
   imports: [SharedModule, SidebarModule, QuillModule],
   providers: [ChromeStorageService, SearchNotePipe],
   bootstrap: [AppComponent]

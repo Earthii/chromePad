@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
 
   handleAddNote() {
     if (this.newNote == null) {
-      this.newNote = { name: "New Note", content: "", id: "NEW" };
+      this.newNote = { name: "", content: "", id: "NEW" };
       this.notes.unshift(Object.assign({}, this.newNote));
       this.notesCache = this.notes;
       this.activeNote = this.notes[0];
@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
       if (!this.activeNote) {
         console.log("No search results found");
         if (this.notesCache[0].id !== "NEW" && this.notesCache.length > 1) {
-          this.newNote = { name: "New Note", content: "", id: "NEW" };
+          this.newNote = { name: "", content: "", id: "NEW" };
           this.notesCache.unshift(this.newNote);
         }
         this.notes.push(this.notesCache[0]);
