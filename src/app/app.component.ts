@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Note } from "./models/Note";
 
 import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.service";
-import { NoteManipulationService } from "./services/note-manipulation/note-manipulation.service";
 
 @Component({
   selector: "app-root",
@@ -17,10 +16,7 @@ export class AppComponent implements OnInit {
   typingTimeout;
   userIsTyping: Boolean;
 
-  constructor(
-    private chromeStorage: ChromeStorageService,
-    private noteManipulationService: NoteManipulationService
-  ) {
+  constructor(private chromeStorage: ChromeStorageService) {
     this.newNote = null;
     this.notes = [];
     this.notesCache = this.notes;
@@ -71,8 +67,6 @@ export class AppComponent implements OnInit {
     }
 
     if (note.id !== "NEW" && note.id !== "LOADING") {
-      this.noteManipulationService.buildPreviewMessage(note);
-
       // Prevent spaming chrome storage API
       if (this.typingTimeout !== undefined) {
         clearTimeout(this.typingTimeout);

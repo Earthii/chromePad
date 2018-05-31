@@ -1,12 +1,10 @@
-import { Injectable } from "@angular/core";
+import { Pipe, PipeTransform } from "@angular/core";
 
-@Injectable({
-  providedIn: "root"
+@Pipe({
+  name: "stripHtml"
 })
-export class StripHtmlService {
-  constructor() {}
-
-  removeHtmlFromString(string: string): string {
+export class StripHtmlPipe implements PipeTransform {
+  transform(string: string): string {
     const removeHtmlRegex = /<[^>]*>?|&nbsp;/g;
     const contentFormatLists = string.replace(/<\/li>/g, " ");
     const contentStripedOfHtml = contentFormatLists.replace(

@@ -9,13 +9,10 @@ import { SidebarModule } from "./component/sidebar/sidebar.module";
 import { QuillModule } from "ngx-quill";
 
 import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.service";
-import { StripHtmlService } from "./services/strip-html/strip-html.service";
-import { NoteManipulationService } from "./services/note-manipulation/note-manipulation.service";
-
 @NgModule({
   declarations: [AppComponent, NoteComponent],
   imports: [SharedModule, SidebarModule, QuillModule],
-  providers: [ChromeStorageService, StripHtmlService, NoteManipulationService],
+  providers: [ChromeStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
