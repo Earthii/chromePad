@@ -9,6 +9,7 @@ import { Note } from "../../../models/Note";
 export class NavComponent {
   @Input() notes: Note[];
   @Input() activeNote: Note;
+  @Input() searchQuery: String;
 
   @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
   @Output() removeNoteEvent: EventEmitter<Note> = new EventEmitter();

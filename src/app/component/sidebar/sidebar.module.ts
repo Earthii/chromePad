@@ -7,6 +7,7 @@ import { NavComponent } from "./nav/nav.component";
 import { PreviewNoteComponent } from "./nav/preview-note/preview-note.component";
 
 import { StripHtmlPipe } from "./../../pipes/strip-html/strip-html.pipe";
+import { SearchNotePipe } from "./../../pipes/search-note/search-note.pipe";
 
 @NgModule({
   imports: [SharedModule],
@@ -15,7 +16,9 @@ import { StripHtmlPipe } from "./../../pipes/strip-html/strip-html.pipe";
     ControlsComponent,
     NavComponent,
     PreviewNoteComponent,
-    StripHtmlPipe
+    // Pipes
+    StripHtmlPipe,
+    SearchNotePipe
   ],
   exports: [SidebarComponent, NavComponent]
 })
