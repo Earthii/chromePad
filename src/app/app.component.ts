@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
       this.activeNote = this.notes[0];
     }
   }
-
+  // TODO: first load will call api
   handleUpdateNote(note: Note) {
     // New note has content now
     if (note.id === "NEW" && note.content !== "") {
@@ -91,11 +91,9 @@ export class AppComponent implements OnInit {
         this.newNote = null;
       }
     }
-
     this.notes = this.notes.filter(item => item.id !== note.id);
     this.notesCache = this.notes;
     this.chromeStorage.removeNote(note);
-
     this.changeToDefaultActiveNote();
   }
 
