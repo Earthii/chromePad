@@ -1,6 +1,6 @@
 <div id="note-container">
   <quill-editor [ngModel]="activeNote.content" (onContentChanged)="updateNote($event)" [modules]="editorModules"></quill-editor>
-  <div class="typing-indicator" *ngIf="userTyping">
+  <div class="typing-indicator" *ngIf="userIsTyping">
     <span>Typing ...</span>
   </div>
 </div>

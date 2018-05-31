@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   notes: Note[];
   notesCache: Note[];
   activeNote: Note;
-  searchingState: Boolean;
+  typingTimeout;
+  userIsTyping: Boolean;
 
   constructor(
     private chromeStorage: ChromeStorageService,
@@ -22,6 +23,9 @@ export class AppComponent implements OnInit {
   ) {
     this.newNote = null;
     this.notes = [];
+    this.notesCache = this.notes;
+    this.typingTimeout = undefined;
+    this.userIsTyping = false;
     // TODO: alternative for safe navigation in note.component.html
     this.activeNote = {
       name: "Loading",
@@ -58,6 +62,8 @@ export class AppComponent implements OnInit {
   }
 
   handleUpdateNote(note: Note) {
+    this.userIsTyping = true;
+
     if (note.id === "NEW") {
       if (note.content !== "") {
         note.id = this.chromeStorage.generateNoteUuid();
@@ -66,7 +72,16 @@ export class AppComponent implements OnInit {
 
     if (note.id !== "NEW" && note.id !== "LOADING") {
       this.noteManipulationService.buildPreviewMessage(note);
-      this.chromeStorage.storeNote(note);
+
+      // Prevent spaming chrome storage API
+      if (this.typingTimeout !== undefined) {
+        clearTimeout(this.typingTimeout);
+      }
+      this.typingTimeout = setTimeout(() => {
+        this.userIsTyping = false;
+        this.chromeStorage.storeNote(note);
+      }, 400);
+
       this.newNote = null;
     }
   }
@@ -99,7 +114,6 @@ export class AppComponent implements OnInit {
   handleSearchNote(query: string) {
     this.notes = this.notesCache;
     if (query !== "") {
-      this.searchingState = true;
       this.notes = this.notes.filter(item => {
         const inName = item.name.includes(query);
         const inContent = item.content.includes(query);
@@ -118,7 +132,6 @@ export class AppComponent implements OnInit {
         this.activeNote = this.notes[0];
       }
     } else {
-      this.searchingState = false;
       this.activeNote = this.notes[0];
     }
   }
