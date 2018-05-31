@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
     // New note has content now
     if (note.id === "NEW" && note.content !== "") {
       note.id = this.chromeStorage.generateNoteUuid();
+      this.newNote = null;
     }
 
     if (note.id !== "NEW") {
@@ -77,8 +78,6 @@ export class AppComponent implements OnInit {
         this.userIsTyping = false;
         this.chromeStorage.storeNote(note);
       }, 400);
-
-      this.newNote = null;
     }
   }
 
