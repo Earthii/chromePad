@@ -1,7 +1,6 @@
 import { Component, Input, EventEmitter, Output } from "@angular/core";
 
 import { Note } from "../../../models/Note";
-
 @Component({
   selector: "app-nav",
   templateUrl: "./nav.component.html",

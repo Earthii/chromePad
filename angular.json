@@ -29,10 +29,6 @@
             ],
             "scripts": [
               {
-                "input": "node_modules/ngx-quill/bundles/ngx-quill.umd.js",
-                "bundleName": "ngx-quill"
-              },
-              {
                 "input": "node_modules/quill/dist/quill.js",
                 "bundleName": "quill"
               }
