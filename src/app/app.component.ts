@@ -62,15 +62,13 @@ export class AppComponent implements OnInit {
   }
 
   handleUpdateNote(note: Note) {
-    this.userIsTyping = true;
-
-    if (note.id === "NEW") {
-      if (note.content !== "") {
-        note.id = this.chromeStorage.generateNoteUuid();
-      }
+    // New note has content now
+    if (note.id === "NEW" && note.content !== "") {
+      note.id = this.chromeStorage.generateNoteUuid();
     }
 
-    if (note.id !== "NEW" && note.id !== "LOADING") {
+    if (note.id !== "NEW") {
+      this.userIsTyping = true;
       // Prevent spaming chrome storage API
       if (this.typingTimeout !== undefined) {
         clearTimeout(this.typingTimeout);
