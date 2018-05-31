@@ -1,4 +1,4 @@
-# ChromePad
+# [ChromePad](https://chrome.google.com/webstore/detail/chromepad/dpofibmpjiejdbmpkflaedamfkglbdfl)
 
 chromePad is a chrome extension which enables users to take notes through chrome.
 
