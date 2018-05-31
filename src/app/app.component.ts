@@ -1,3 +1,4 @@
+import { SearchNotePipe } from "./pipes/search-note/search-note.pipe";
 import { Component, OnInit } from "@angular/core";
 import { Note } from "./models/Note";
 
@@ -16,7 +17,10 @@ export class AppComponent implements OnInit {
   typingTimeout;
   userIsTyping: Boolean;
 
-  constructor(private chromeStorage: ChromeStorageService) {
+  constructor(
+    private chromeStorage: ChromeStorageService,
+    private searchNotePipe: SearchNotePipe
+  ) {
     this.newNote = null;
     this.notes = [];
     this.notesCache = this.notes;
@@ -108,12 +112,7 @@ export class AppComponent implements OnInit {
   handleSearchNote(query: string) {
     this.notes = this.notesCache;
     if (query !== "") {
-      this.notes = this.notes.filter(item => {
-        const inName = item.name.includes(query);
-        const inContent = item.content.includes(query);
-        return inName || inContent;
-      });
-
+      this.notes = this.searchNotePipe.transform(this.notes, query);
       this.activeNote = this.notes[0];
 
       if (!this.activeNote) {

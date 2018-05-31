@@ -12,7 +12,6 @@ import { NotExpr } from "@angular/compiler";
 export class SidebarComponent {
   @Input() activeNote: Note;
   @Input() notes: Note[];
-  searchQuery: String;
 
   @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
   @Output() addNoteEvent: EventEmitter<Note> = new EventEmitter();
@@ -20,9 +19,7 @@ export class SidebarComponent {
   @Output() changeNoteNameEvent: EventEmitter<Note> = new EventEmitter();
   @Output() searchNoteEvent: EventEmitter<String> = new EventEmitter();
 
-  constructor() {
-    this.searchQuery = "";
-  }
+  constructor() {}
 
   handleAddNote() {
     this.addNoteEvent.emit();
@@ -41,7 +38,6 @@ export class SidebarComponent {
   }
 
   handleSearchNote(query: string) {
-    this.searchQuery = query;
-    // this.searchNoteEvent.emit(query);
+    this.searchNoteEvent.emit(query);
   }
 }
