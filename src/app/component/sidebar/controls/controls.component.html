@@ -1,5 +1,9 @@
 <div id="controls-container">
-
-  <i class="add-btn mdi mdi-shape-square-plus" (click)="addNote()"></i>
+  <i class="add-btn mdi"
+    [ngClass]="addBtnCssClass"
+    (mouseenter)="toggleAddBtnCssClass()"
+    (mouseleave)="toggleAddBtnCssClass()"
+    (click)="addNote()">
+  </i>
   <input class="searchBox" type="text" placeholder="Search for note..." (keyup)="doSearch($event.target.value)" />
 </div>

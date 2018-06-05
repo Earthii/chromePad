@@ -4,11 +4,9 @@
   display: flex;
 
   .add-btn {
-    padding: 3px;
-    font-size: 18px;
-  }
-  .add-btn:hover {
-    font-size: 20px;
+    display: flex;
+    margin: auto;
+    font-size: 26px;
   }
   .searchBox {
     margin: 3px;
