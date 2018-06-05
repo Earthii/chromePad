@@ -7,6 +7,8 @@ import { Note } from "../../../../models/Note";
   styleUrls: ["./preview-note.component.scss"]
 })
 export class PreviewNoteComponent {
+  removeBtnIconCssClass = "mdi-close-circle-outline";
+
   @Input() note: Note;
   @Input() active: Boolean;
 
@@ -27,5 +29,11 @@ export class PreviewNoteComponent {
   changeNoteName(newName) {
     this.note.name = newName;
     this.changeNoteNameEvent.emit(this.note);
+  }
+
+  toggleRemoveCssClass() {
+    this.removeBtnIconCssClass === "mdi-close-circle-outline"
+      ? (this.removeBtnIconCssClass = "mdi-close-circle")
+      : (this.removeBtnIconCssClass = "mdi-close-circle-outline");
   }
 }
