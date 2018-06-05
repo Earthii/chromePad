@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "dev": "ng build --prod --watch",
-    "build": "ng build --prod && cd ./src && cp manifest.json ./../dist/chromePad",
+    "build":
+      "ng build --prod && cd ./src && cp manifest.json ./../dist/chromePad",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

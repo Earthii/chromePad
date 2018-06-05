@@ -1,3 +1,5 @@
+@import "../../../../variables.scss";
+
 #nav-container {
   height: calc(100% - 31px);
 }
@@ -17,13 +19,13 @@
     border-width: 0.5px 0px 0.5px 0px;
   }
   .activeNote {
-    border-left: 5px solid #1c72ff;
+    border-left: 7px solid $active-note-blue;
   }
   .syncingNote {
-    border-left: 5px solid #f7ef13 !important;
+    border-left: 7px solid $syncing-yellow !important;
   }
   .newNote {
-    border-left: 5px solid #00d618;
+    border-left: 7px solid $new-green;
   }
   .note-container:first-child {
     border-top: none;
