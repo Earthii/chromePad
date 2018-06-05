@@ -6,7 +6,8 @@
 
   <app-nav 
     [notes]="notes" 
-    [activeNote]="activeNote" 
+    [activeNote]="activeNote"
+    [userIsTyping]="userIsTyping" 
     (viewNoteEvent)="handleViewNote($event)" 
     (removeNoteEvent)="handleRemoveNote($event)"
     (changeNoteNameEvent)="handleChangeNoteName($event)">

@@ -12,6 +12,7 @@ import { NotExpr } from "@angular/compiler";
 export class SidebarComponent {
   @Input() activeNote: Note;
   @Input() notes: Note[];
+  @Input() userIsTyping: boolean;
 
   @Output() viewNoteEvent: EventEmitter<Note> = new EventEmitter();
   @Output() addNoteEvent: EventEmitter<Note> = new EventEmitter();

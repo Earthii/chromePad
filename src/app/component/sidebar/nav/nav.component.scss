@@ -19,13 +19,13 @@
   .activeNote {
     border-left: 5px solid #1c72ff;
   }
+  .syncingNote {
+    border-left: 5px solid #f7ef13 !important;
+  }
   .newNote {
     border-left: 5px solid #00d618;
   }
   .note-container:first-child {
     border-top: none;
   }
-  // .note-container:last-child {
-  //   border-bottom: none;
-  // }
 }
