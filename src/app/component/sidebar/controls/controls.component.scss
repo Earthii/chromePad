@@ -1,3 +1,4 @@
+@import "../../../../variables.scss";
 #controls-container {
   height: 30px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -11,5 +12,11 @@
   .searchBox {
     margin: 3px;
     width: 100%;
+  }
+  .mdi-plus-box {
+    color: $active-add-note-blue;
+  }
+  .mdi-plus-box-outline {
+    color: $inactive-grey;
   }
 }
