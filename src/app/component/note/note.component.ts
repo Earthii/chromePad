@@ -28,14 +28,12 @@ export class NoteComponent {
   };
 
   updateNote(event) {
-    // TODO: if statement avoids ExpressionChangedAfterItHasBeenCheckedError
-    if (this.activeNote.id !== "LOADING") {
-      if (event.html === null) {
-        this.activeNote.content = "";
-      } else {
-        this.activeNote.content = event.html;
-      }
-      this.updateNoteEvent.emit(this.activeNote);
+    if (event.html === null) {
+      this.activeNote.content = "";
+    } else {
+      this.activeNote.content = event.html;
     }
+
+    this.updateNoteEvent.emit(this.activeNote);
   }
 }

@@ -1,3 +1,4 @@
+import { SortNoteByDatePipe } from "./pipes/sort-note-by-date/sort-note-by-date.pipe";
 import { SearchNotePipe } from "./pipes/search-note/search-note.pipe";
 import { Component, OnInit } from "@angular/core";
 import { Note } from "./models/Note";
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private chromeStorage: ChromeStorageService,
-    private searchNotePipe: SearchNotePipe
+    private searchNotePipe: SearchNotePipe,
+    private sortNoteByDatePipe: SortNoteByDatePipe
   ) {
     this.newNote = null;
     this.notes = [];
@@ -38,6 +40,8 @@ export class AppComponent implements OnInit {
     // TODO: introduce observables
     this.chromeStorage.getAllNotes().then(notes => {
       this.notes = Object.values(notes);
+      // Sort notes on init
+      this.notes = this.sortNoteByDatePipe.transform(this.notes);
       this.notesCache = this.notes;
       if (this.notes.length === 0) {
         this.handleAddNote();
@@ -76,6 +80,7 @@ export class AppComponent implements OnInit {
       }
       this.typingTimeout = setTimeout(() => {
         this.userIsTyping = false;
+        note.lastUpdated = this.chromeStorage.generateTimeStamp();
         this.chromeStorage.storeNote(note);
       }, 400);
     }

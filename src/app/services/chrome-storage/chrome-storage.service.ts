@@ -34,4 +34,8 @@ export class ChromeStorageService {
   generateNoteUuid() {
     return uuid();
   }
+
+  generateTimeStamp() {
+    return Date.now();
+  }
 }
