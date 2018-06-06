@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   newNote: Note;
   notes: Note[];
   notesCache: Note[];
+  previousNote: Note;
   activeNote: Note;
   typingTimeout;
 
@@ -48,14 +49,14 @@ export class AppComponent implements OnInit {
       if (this.notes.length === 0) {
         this.handleAddNote();
       } else {
-        this.activeNote = this.notes[0];
+        this.setActiveNote(this.notes[0]);
       }
     });
   }
 
   handleViewNote(note: Note) {
     // css prevents users to switch view while user is typing
-    this.activeNote = note;
+    this.setActiveNote(note);
     this.fromHandleViewNote = true;
     console.log("View: " + note.id);
   }
@@ -66,14 +67,20 @@ export class AppComponent implements OnInit {
       this.newNote = { name: "", content: "", id: "NEW" };
       this.notes.unshift(Object.assign({}, this.newNote));
       this.notesCache = this.notes;
-      this.activeNote = this.notes[0];
+      this.setActiveNote(this.notes[0]);
     }
   }
-  // TODO: first load will call api
+
   handleUpdateNote(note: Note) {
+    // Prevent call to storage on start up, if notes
+    // are already present in chrome storage
+    if (this.previousNote.id === "LOADING" && note.id !== "NEW") {
+      this.previousNote.id = "DONE LOADING";
+      return;
+    }
+
     // Prevent call to storage when simply switching note
     if (this.fromHandleViewNote) {
-      console.log("From view, dont update");
       this.fromHandleViewNote = false;
       return;
     }
@@ -128,7 +135,7 @@ export class AppComponent implements OnInit {
     this.notes = this.notesCache;
     if (query !== "") {
       this.notes = this.searchNotePipe.transform(this.notes, query);
-      this.activeNote = this.notes[0];
+      this.setActiveNote(this.notes[0]);
 
       if (!this.activeNote) {
         console.log("No search results found");
@@ -137,10 +144,10 @@ export class AppComponent implements OnInit {
           this.notesCache.unshift(this.newNote);
         }
         this.notes.push(this.notesCache[0]);
-        this.activeNote = this.notes[0];
+        this.setActiveNote(this.notes[0]);
       }
     } else {
-      this.activeNote = this.notes[0];
+      this.setActiveNote(this.notes[0]);
     }
   }
 
@@ -148,7 +155,12 @@ export class AppComponent implements OnInit {
     if (this.notes.length === 0) {
       this.handleAddNote();
     } else {
-      this.activeNote = this.notes[0];
+      this.setActiveNote(this.notes[0]);
     }
+  }
+
+  private setActiveNote(note: Note) {
+    this.previousNote = this.activeNote;
+    this.activeNote = note;
   }
 }
