@@ -3,6 +3,7 @@
 import { Injectable } from "@angular/core";
 import { v4 as uuid } from "uuid";
 import { Note } from "../../models/Note";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -13,8 +14,12 @@ export class ChromeStorageService {
   storeNote(note) {
     const chromeNoteObj = {};
     chromeNoteObj[note.id] = note;
-    console.log("Updated/stored note: ", note);
-    chrome.storage.sync.set(chromeNoteObj, function() {});
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.set(chromeNoteObj, function() {
+        console.log("Updated/stored note: ", note);
+        resolve();
+      });
+    });
   }
 
   getAllNotes() {
@@ -26,8 +31,11 @@ export class ChromeStorageService {
   }
 
   removeNote(note: Note) {
-    chrome.storage.sync.remove(note.id, function() {
-      console.log("removed " + note.id);
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.remove(note.id, function() {
+        console.log("removed " + note.id);
+        resolve();
+      });
     });
   }
 

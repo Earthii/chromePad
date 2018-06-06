@@ -79,9 +79,11 @@ export class AppComponent implements OnInit {
         clearTimeout(this.typingTimeout);
       }
       this.typingTimeout = setTimeout(() => {
-        this.userIsTyping = false;
         note.lastUpdated = this.chromeStorage.generateTimeStamp();
-        this.chromeStorage.storeNote(note);
+
+        this.chromeStorage.storeNote(note).then(() => {
+          this.userIsTyping = false;
+        });
       }, 400);
     }
   }
@@ -95,10 +97,12 @@ export class AppComponent implements OnInit {
         this.newNote = null;
       }
     }
-    this.notes = this.notes.filter(item => item.id !== note.id);
-    this.notesCache = this.notes;
-    this.chromeStorage.removeNote(note);
-    this.changeToDefaultActiveNote();
+
+    this.chromeStorage.removeNote(note).then(() => {
+      this.notes = this.notes.filter(item => item.id !== note.id);
+      this.notesCache = this.notes;
+      this.changeToDefaultActiveNote();
+    });
   }
 
   handleChangeNoteName(note: Note) {
