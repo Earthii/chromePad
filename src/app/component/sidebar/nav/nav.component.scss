@@ -13,6 +13,7 @@
   .note-container {
     height: 80px;
     border-collapse: collapse;
+    position: relative;
     cursor: pointer;
     border-color: rgba(0, 0, 0, 0.2);
     border-style: solid;
@@ -30,4 +31,11 @@
   .note-container:first-child {
     border-top: none;
   }
+}
+.nav-note-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #ccc;
+  opacity: 0.2;
 }

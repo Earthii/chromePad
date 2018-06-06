@@ -16,7 +16,9 @@ export class AppComponent implements OnInit {
   notesCache: Note[];
   activeNote: Note;
   typingTimeout;
+
   userIsTyping: Boolean;
+  fromHandleViewNote: Boolean;
 
   constructor(
     private chromeStorage: ChromeStorageService,
@@ -52,12 +54,15 @@ export class AppComponent implements OnInit {
   }
 
   handleViewNote(note: Note) {
+    // css prevents users to switch view while user is typing
     this.activeNote = note;
+    this.fromHandleViewNote = true;
     console.log("View: " + note.id);
   }
 
   handleAddNote() {
-    if (this.newNote == null) {
+    // Prevent user from typing and rapidly try to add new note
+    if (this.newNote == null && !this.userIsTyping) {
       this.newNote = { name: "", content: "", id: "NEW" };
       this.notes.unshift(Object.assign({}, this.newNote));
       this.notesCache = this.notes;
@@ -66,6 +71,13 @@ export class AppComponent implements OnInit {
   }
   // TODO: first load will call api
   handleUpdateNote(note: Note) {
+    // Prevent call to storage when simply switching note
+    if (this.fromHandleViewNote) {
+      console.log("From view, dont update");
+      this.fromHandleViewNote = false;
+      return;
+    }
+
     // New note has content now
     if (note.id === "NEW" && note.content !== "") {
       note.id = this.chromeStorage.generateNoteUuid();
@@ -80,7 +92,6 @@ export class AppComponent implements OnInit {
       }
       this.typingTimeout = setTimeout(() => {
         note.lastUpdated = this.chromeStorage.generateTimeStamp();
-
         this.chromeStorage.storeNote(note).then(() => {
           this.userIsTyping = false;
         });
