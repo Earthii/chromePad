@@ -11,15 +11,16 @@ import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.s
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-  newNote: Note;
-  notes: Note[];
-  notesCache: Note[];
-  previousNote: Note;
-  activeNote: Note;
-  typingTimeout;
-
+  newNote: Note; // the reference to the new note
+  notes: Note[]; // the notes that are displayed in the navigation
+  notesCache: Note[]; // the cache used mainly for searching feature (prevent call to storage API)
+  previousNote: Note; // the previous active note
+  activeNote: Note; // the active note
+  typingTimeout; // timeout to control call storage API after user stops typing
+  // flags to control UI, and business flow
   userIsTyping: Boolean;
   userIsSearching: Boolean;
+  // flags to prevent unwanted call to storage API
   fromHandleViewNote: Boolean;
   fromHandleSearch: Boolean;
 
@@ -44,7 +45,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // TODO: introduce observables
     this.chromeStorage.getAllNotes().then(notes => {
       this.notes = Object.values(notes);
       this.notes = this.sortNoteByDatePipe.transform(this.notes);
@@ -59,10 +59,16 @@ export class AppComponent implements OnInit {
   }
 
   handleViewNote(note: Note) {
-    // css prevents users to switch view while user is typing
-    this.setActiveNote(note);
-    this.fromHandleViewNote = true;
-    console.log("View: " + note.id);
+    if (this.activeNote !== note) {
+      this.setActiveNote(note);
+      if (note.content !== "") {
+        // will switch activeNote.content.
+        // which results in handleUpdateNote.
+        // we want to avoid this.
+        this.fromHandleViewNote = true;
+      }
+      console.log("View: " + note.id);
+    }
   }
 
   handleAddNote() {
@@ -70,6 +76,7 @@ export class AppComponent implements OnInit {
     if (this.newNote == null && !this.userIsTyping) {
       this.newNote = { name: "", content: "", id: "NEW" };
       this.notes.unshift(Object.assign({}, this.newNote));
+
       if (this.userIsSearching) {
         this.notesCache.unshift(this.notes[0]);
       } else {
@@ -139,12 +146,14 @@ export class AppComponent implements OnInit {
   }
 
   handleSearchNote(query: string) {
-    this.fromHandleSearch = true;
-    this.notes = this.notesCache; // reset same refence
-
+    this.notes = this.notesCache; // reset same reference
     if (query !== "") {
       this.userIsSearching = true;
-
+      // allow add -> search existing -> add
+      if (this.notesCache[0].id === "NEW") {
+        this.notesCache.shift();
+        this.newNote = null;
+      }
       this.notes = this.searchNotePipe.transform(this.notes, query); // obtains new references
       if (!this.notes[0]) {
         // No search results found
@@ -159,8 +168,12 @@ export class AppComponent implements OnInit {
     } else {
       this.userIsSearching = false;
     }
-
     this.setActiveNote(this.notes[0]);
+
+    if (this.previousNote.id !== this.activeNote.id) {
+      // If active note did not change, do not trigger update
+      this.fromHandleSearch = true;
+    }
   }
 
   private changeToDefaultActiveNote() {
@@ -172,7 +185,8 @@ export class AppComponent implements OnInit {
   }
 
   private setActiveNote(note: Note) {
-    this.previousNote = this.activeNote;
+    // dont let user spam the same note
+    this.previousNote = { ...this.activeNote };
     this.activeNote = note;
   }
 }
