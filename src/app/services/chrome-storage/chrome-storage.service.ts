@@ -14,7 +14,7 @@ export class ChromeStorageService {
   storeNote(note) {
     const chromeNoteObj = {};
     chromeNoteObj[note.id] = note;
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       chrome.storage.sync.set(chromeNoteObj, function() {
         console.log("Updated/stored note: ", note);
         resolve();
@@ -23,15 +23,15 @@ export class ChromeStorageService {
   }
 
   getAllNotes() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       chrome.storage.sync.get(function(result) {
-        resolve(result);
+        resolve(Object.values(result));
       });
     });
   }
 
   removeNote(note: Note) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       chrome.storage.sync.remove(note.id, function() {
         console.log("removed " + note.id);
         resolve();

@@ -43,8 +43,6 @@ export class AppComponent implements OnInit {
     // TODO: introduce observables
     this.chromeStorage.getAllNotes().then(notes => {
       this.notes = Object.values(notes);
-      // Sort notes on init
-      this.notes = this.sortNoteByDatePipe.transform(this.notes);
       this.notesCache = this.notes;
       if (this.notes.length === 0) {
         this.handleAddNote();

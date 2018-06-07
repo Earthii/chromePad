@@ -12,12 +12,7 @@ import { SearchNotePipe } from "./pipes/search-note/search-note.pipe";
 import { SortNoteByDatePipe } from "./pipes/sort-note-by-date/sort-note-by-date.pipe";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NoteComponent,
-    SearchNotePipe,
-    SortNoteByDatePipe
-  ],
+  declarations: [AppComponent, NoteComponent],
   imports: [SharedModule, SidebarModule, QuillModule],
   providers: [ChromeStorageService, SearchNotePipe, SortNoteByDatePipe],
   bootstrap: [AppComponent]

@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from "@angular/core";
 import { Note } from "../../models/Note";
 
 @Pipe({
-  name: "sortNoteByDate"
+  name: "sortNoteByDate",
+  pure: false // allow pipe to run multiple times in html
 })
 export class SortNoteByDatePipe implements PipeTransform {
   transform(notes: Note[]): Note[] {

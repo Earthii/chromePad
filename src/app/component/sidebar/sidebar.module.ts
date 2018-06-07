@@ -14,9 +14,7 @@ import { StripHtmlPipe } from "./../../pipes/strip-html/strip-html.pipe";
     SidebarComponent,
     ControlsComponent,
     NavComponent,
-    PreviewNoteComponent,
-    // Pipes
-    StripHtmlPipe
+    PreviewNoteComponent
   ],
   exports: [SidebarComponent, NavComponent]
 })

@@ -2,7 +2,7 @@
   <ul class="listOfNotes">
     <li class="note-container"
       [ngClass]="{'newNote': note.id === 'NEW' && activeNote == note,'activeNote': activeNote == note, 'syncingNote': userIsTyping && activeNote == note}"
-      *ngFor="let note of notes">
+      *ngFor="let note of (notes | sortNoteByDate)">
       <div class="nav-note-overlay" *ngIf="userIsTyping && activeNote !== note"></div>  
       <app-preview-note 
         [note]="note" 
