@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   typingTimeout;
 
   userIsTyping: Boolean;
+  userIsSearching: Boolean;
   fromHandleViewNote: Boolean;
   fromHandleSearch: Boolean;
 
@@ -67,7 +68,11 @@ export class AppComponent implements OnInit {
     if (this.newNote == null && !this.userIsTyping) {
       this.newNote = { name: "", content: "", id: "NEW" };
       this.notes.unshift(Object.assign({}, this.newNote));
-      this.notesCache = this.notes;
+      if (this.userIsSearching) {
+        this.notesCache.unshift(this.notes[0]);
+      } else {
+        this.notesCache = this.notes;
+      }
       this.setActiveNote(this.notes[0]);
     }
   }
@@ -136,11 +141,13 @@ export class AppComponent implements OnInit {
   handleSearchNote(query: string) {
     this.fromHandleSearch = true;
     this.notes = this.notesCache;
-    if (query !== "") {
-      this.notes = this.searchNotePipe.transform(this.notes, query);
-      this.setActiveNote(this.notes[0]);
 
-      if (!this.activeNote) {
+    if (query !== "") {
+      this.userIsSearching = true;
+
+      this.notes = this.searchNotePipe.transform(this.notes, query);
+
+      if (!this.notes[0]) {
         console.log("No search results found");
         if (this.notesCache[0].id !== "NEW" && this.notesCache.length > 1) {
           this.newNote = { name: "", content: "", id: "NEW" };
@@ -148,8 +155,12 @@ export class AppComponent implements OnInit {
         }
         this.notes.push(this.notesCache[0]);
         this.setActiveNote(this.notes[0]);
+      } else {
+        // search results found
+        this.setActiveNote(this.notes[0]);
       }
     } else {
+      this.userIsSearching = false;
       this.setActiveNote(this.notes[0]);
     }
   }
