@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
 
   userIsTyping: Boolean;
   fromHandleViewNote: Boolean;
+  fromHandleSearch: Boolean;
 
   constructor(
     private chromeStorage: ChromeStorageService,
@@ -43,6 +44,8 @@ export class AppComponent implements OnInit {
     // TODO: introduce observables
     this.chromeStorage.getAllNotes().then(notes => {
       this.notes = Object.values(notes);
+      this.notes = this.sortNoteByDatePipe.transform(this.notes);
+
       this.notesCache = this.notes;
       if (this.notes.length === 0) {
         this.handleAddNote();
@@ -78,8 +81,9 @@ export class AppComponent implements OnInit {
     }
 
     // Prevent call to storage when simply switching note
-    if (this.fromHandleViewNote) {
+    if (this.fromHandleViewNote || this.fromHandleSearch) {
       this.fromHandleViewNote = false;
+      this.fromHandleSearch = false;
       return;
     }
 
@@ -130,6 +134,7 @@ export class AppComponent implements OnInit {
   }
 
   handleSearchNote(query: string) {
+    this.fromHandleSearch = true;
     this.notes = this.notesCache;
     if (query !== "") {
       this.notes = this.searchNotePipe.transform(this.notes, query);
