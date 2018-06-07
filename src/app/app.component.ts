@@ -33,6 +33,8 @@ export class AppComponent implements OnInit {
     this.notesCache = this.notes;
     this.typingTimeout = undefined;
     this.userIsTyping = false;
+    this.fromHandleSearch = false;
+    this.fromHandleViewNote = false;
     // TODO: alternative for safe navigation in note.component.html
     this.activeNote = {
       name: "Loading",
@@ -84,14 +86,12 @@ export class AppComponent implements OnInit {
       this.previousNote.id = "DONE LOADING";
       return;
     }
-
     // Prevent call to storage when simply switching note
     if (this.fromHandleViewNote || this.fromHandleSearch) {
       this.fromHandleViewNote = false;
       this.fromHandleSearch = false;
       return;
     }
-
     // New note has content now
     if (note.id === "NEW" && note.content !== "") {
       note.id = this.chromeStorage.generateNoteUuid();
@@ -140,29 +140,27 @@ export class AppComponent implements OnInit {
 
   handleSearchNote(query: string) {
     this.fromHandleSearch = true;
-    this.notes = this.notesCache;
+    this.notes = this.notesCache; // reset same refence
 
     if (query !== "") {
       this.userIsSearching = true;
 
-      this.notes = this.searchNotePipe.transform(this.notes, query);
-
+      this.notes = this.searchNotePipe.transform(this.notes, query); // obtains new references
       if (!this.notes[0]) {
-        console.log("No search results found");
-        if (this.notesCache[0].id !== "NEW" && this.notesCache.length > 1) {
+        // No search results found
+        if (this.notesCache[0].id !== "NEW") {
+          // Add newNote to cache
           this.newNote = { name: "", content: "", id: "NEW" };
           this.notesCache.unshift(this.newNote);
         }
-        this.notes.push(this.notesCache[0]);
-        this.setActiveNote(this.notes[0]);
-      } else {
-        // search results found
-        this.setActiveNote(this.notes[0]);
+        this.notes.push(this.notesCache[0]); // display new note option
+        this.fromHandleSearch = false; // because handleUpdateNote wont be triggered by a new note content = ''
       }
     } else {
       this.userIsSearching = false;
-      this.setActiveNote(this.notes[0]);
     }
+
+    this.setActiveNote(this.notes[0]);
   }
 
   private changeToDefaultActiveNote() {
