@@ -10,6 +10,12 @@
     padding: 5px;
     .noteNameInput {
       width: 80%;
+      border: 0px;
+      border-bottom: 1px solid #ccc;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .notePreview {
       /* These are technically the same, but use both */
