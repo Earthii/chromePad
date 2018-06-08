@@ -1,7 +1,7 @@
 {
   "name": "chromePad",
   "short_name": "chromePad",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description":
     "A chrome extension enables users to sync their notes to chrome. App oowered by an rich text editor",
   "browser_action": {
