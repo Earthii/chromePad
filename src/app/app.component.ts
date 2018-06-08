@@ -47,24 +47,24 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.chromeStorage.getAllNotes().then(notes => {
       this.notes = Object.values(notes);
-      this.notes = this.sortNoteByDatePipe.transform(this.notes);
-
-      this.notesCache = this.notes;
+      this.notes = this.sortNoteByDatePipe.transform(this.notes); // initially, sort notes by dates
+      this.notesCache = this.notes; // notes cache will have the safe reference as notes
       if (this.notes.length === 0) {
-        this.handleAddNote();
+        this.handleAddNote(); // If there is no existing notes, put by default a new note
       } else {
-        this.setActiveNote(this.notes[0]);
+        this.setActiveNote(this.notes[0]); // else select the first as default
       }
     });
   }
 
   handleViewNote(note: Note) {
+    // prevent spamming the same note
     if (this.activeNote !== note) {
       this.setActiveNote(note);
       if (note.content !== "") {
         // will switch activeNote.content.
         // which results in handleUpdateNote.
-        // we want to avoid this.
+        // we want to avoid this when its not necessary.
         this.fromHandleViewNote = true;
       }
       console.log("View: " + note.id);
@@ -176,6 +176,9 @@ export class AppComponent implements OnInit {
     }
   }
 
+  /**
+   * HELPER METHODS
+   */
   private changeToDefaultActiveNote() {
     if (this.notes.length === 0) {
       this.handleAddNote();
