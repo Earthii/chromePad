@@ -3,7 +3,6 @@
 import { Injectable } from "@angular/core";
 import { v4 as uuid } from "uuid";
 import { Note } from "../../models/Note";
-import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"

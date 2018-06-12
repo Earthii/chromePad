@@ -7,14 +7,23 @@ import { Note } from "../../models/Note";
   styleUrls: ["./note.component.scss"]
 })
 export class NoteComponent {
-  @Input() activeNote: Note;
+  @Input()
+  set activeNote(note: Note) {
+    console.log("set active note", note);
+    note.id === "NEW" ? (this.noteLoaded = true) : (this.noteLoaded = false);
+    this._activeNote = note;
+  }
   @Input() userIsTyping: Boolean;
   @Output() updateNoteEvent: EventEmitter<Note> = new EventEmitter();
+  _activeNote: Note;
+  noteLoaded = false;
+
+  editor: any;
 
   editorModules = {
     toolbar: [
       ["bold", "italic", "underline", "strike"],
-      ["blockquote", "code-block"],
+      ["blockquote"], // "code-block" removed until fix
       [{ list: "ordered" }, { list: "bullet" }],
       [{ script: "sub" }, { script: "super" }],
       [{ indent: "-1" }, { indent: "+1" }],
@@ -28,12 +37,21 @@ export class NoteComponent {
   };
 
   updateNote(event) {
-    if (event.html === null) {
-      this.activeNote.content = "";
-    } else {
-      this.activeNote.content = event.html;
+    console.log("update");
+    if (!this.noteLoaded) {
+      this.noteLoaded = true;
+      console.log("skip");
+      return;
     }
+    if (event.html === null) {
+      this._activeNote.content = "";
+    } else {
+      this._activeNote.content = event.html;
+    }
+    this.updateNoteEvent.emit(this._activeNote);
+  }
 
-    this.updateNoteEvent.emit(this.activeNote);
+  editorCreated($event) {
+    this.editor = $event;
   }
 }

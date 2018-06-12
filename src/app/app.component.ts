@@ -20,9 +20,6 @@ export class AppComponent implements OnInit {
   // flags to control UI, and business flow
   userIsTyping: Boolean;
   userIsSearching: Boolean;
-  // flags to prevent unwanted call to storage API
-  fromHandleViewNote: Boolean;
-  fromHandleSearch: Boolean;
 
   constructor(
     private chromeStorage: ChromeStorageService,
@@ -34,8 +31,6 @@ export class AppComponent implements OnInit {
     this.notesCache = this.notes;
     this.typingTimeout = undefined;
     this.userIsTyping = false;
-    this.fromHandleSearch = false;
-    this.fromHandleViewNote = false;
     // TODO: alternative for safe navigation in note.component.html
     this.activeNote = {
       name: "Loading",
@@ -61,12 +56,6 @@ export class AppComponent implements OnInit {
     // prevent spamming the same note
     if (this.activeNote !== note) {
       this.setActiveNote(note);
-      if (note.content !== "") {
-        // will switch activeNote.content.
-        // which results in handleUpdateNote.
-        // we want to avoid this when its not necessary.
-        this.fromHandleViewNote = true;
-      }
       console.log("View: " + note.id);
     }
   }
@@ -87,18 +76,6 @@ export class AppComponent implements OnInit {
   }
 
   handleUpdateNote(note: Note) {
-    // Prevent call to storage on start up, if notes
-    // are already present in chrome storage
-    if (this.previousNote.id === "LOADING" && note.id !== "NEW") {
-      this.previousNote.id = "DONE LOADING";
-      return;
-    }
-    // Prevent call to storage when simply switching note
-    if (this.fromHandleViewNote || this.fromHandleSearch) {
-      this.fromHandleViewNote = false;
-      this.fromHandleSearch = false;
-      return;
-    }
     // New note has content now
     if (note.id === "NEW" && note.content !== "") {
       note.id = this.chromeStorage.generateNoteUuid();
@@ -148,7 +125,6 @@ export class AppComponent implements OnInit {
   handleSearchNote(query: string) {
     this.notes = this.notesCache; // reset same reference
     if (query !== "") {
-      this.userIsSearching = true;
       // allow add -> search existing -> add
       if (this.notesCache[0].id === "NEW") {
         this.notesCache.shift();
@@ -163,17 +139,11 @@ export class AppComponent implements OnInit {
           this.notesCache.unshift(this.newNote);
         }
         this.notes.push(this.notesCache[0]); // display new note option
-        this.fromHandleSearch = false; // because handleUpdateNote wont be triggered by a new note content = ''
       }
     } else {
       this.userIsSearching = false;
     }
     this.setActiveNote(this.notes[0]);
-
-    if (this.previousNote.id !== this.activeNote.id) {
-      // If active note did not change, do not trigger update
-      this.fromHandleSearch = true;
-    }
   }
 
   /**
