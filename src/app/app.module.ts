@@ -9,11 +9,12 @@ import { QuillModule } from "ngx-quill";
 
 import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.service";
 import { SearchNotePipe } from "./pipes/search-note/search-note.pipe";
+import { SortNoteByDatePipe } from "./pipes/sort-note-by-date/sort-note-by-date.pipe";
 
 @NgModule({
-  declarations: [AppComponent, NoteComponent, SearchNotePipe],
+  declarations: [AppComponent, NoteComponent],
   imports: [SharedModule, SidebarModule, QuillModule],
-  providers: [ChromeStorageService, SearchNotePipe],
+  providers: [ChromeStorageService, SearchNotePipe, SortNoteByDatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

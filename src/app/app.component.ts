@@ -1,3 +1,4 @@
+import { SortNoteByDatePipe } from "./pipes/sort-note-by-date/sort-note-by-date.pipe";
 import { SearchNotePipe } from "./pipes/search-note/search-note.pipe";
 import { Component, OnInit } from "@angular/core";
 import { Note } from "./models/Note";
@@ -10,22 +11,31 @@ import { ChromeStorageService } from "./services/chrome-storage/chrome-storage.s
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-  newNote: Note;
-  notes: Note[];
-  notesCache: Note[];
-  activeNote: Note;
-  typingTimeout;
+  newNote: Note; // the reference to the new note
+  notes: Note[]; // the notes that are displayed in the navigation
+  notesCache: Note[]; // the cache used mainly for searching feature (prevent call to storage API)
+  previousNote: Note; // the previous active note
+  activeNote: Note; // the active note
+  typingTimeout; // timeout to control call storage API after user stops typing
+  // flags to control UI, and business flow
   userIsTyping: Boolean;
+  userIsSearching: Boolean;
+  // flags to prevent unwanted call to storage API
+  fromHandleViewNote: Boolean;
+  fromHandleSearch: Boolean;
 
   constructor(
     private chromeStorage: ChromeStorageService,
-    private searchNotePipe: SearchNotePipe
+    private searchNotePipe: SearchNotePipe,
+    private sortNoteByDatePipe: SortNoteByDatePipe
   ) {
     this.newNote = null;
     this.notes = [];
     this.notesCache = this.notes;
     this.typingTimeout = undefined;
     this.userIsTyping = false;
+    this.fromHandleSearch = false;
+    this.fromHandleViewNote = false;
     // TODO: alternative for safe navigation in note.component.html
     this.activeNote = {
       name: "Loading",
@@ -35,33 +45,60 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // TODO: introduce observables
     this.chromeStorage.getAllNotes().then(notes => {
       this.notes = Object.values(notes);
-      this.notesCache = this.notes;
+      this.notes = this.sortNoteByDatePipe.transform(this.notes); // initially, sort notes by dates
+      this.notesCache = this.notes; // notes cache will have the safe reference as notes
       if (this.notes.length === 0) {
-        this.handleAddNote();
+        this.handleAddNote(); // If there is no existing notes, put by default a new note
       } else {
-        this.activeNote = this.notes[0];
+        this.setActiveNote(this.notes[0]); // else select the first as default
       }
     });
   }
 
   handleViewNote(note: Note) {
-    this.activeNote = note;
-    console.log("View: " + note.id);
+    // prevent spamming the same note
+    if (this.activeNote !== note) {
+      this.setActiveNote(note);
+      if (note.content !== "") {
+        // will switch activeNote.content.
+        // which results in handleUpdateNote.
+        // we want to avoid this when its not necessary.
+        this.fromHandleViewNote = true;
+      }
+      console.log("View: " + note.id);
+    }
   }
 
   handleAddNote() {
-    if (this.newNote == null) {
+    // Prevent user from typing and rapidly try to add new note
+    if (this.newNote == null && !this.userIsTyping) {
       this.newNote = { name: "", content: "", id: "NEW" };
       this.notes.unshift(Object.assign({}, this.newNote));
-      this.notesCache = this.notes;
-      this.activeNote = this.notes[0];
+
+      if (this.userIsSearching) {
+        this.notesCache.unshift(this.notes[0]);
+      } else {
+        this.notesCache = this.notes;
+      }
+      this.setActiveNote(this.notes[0]);
     }
   }
-  // TODO: first load will call api
+
   handleUpdateNote(note: Note) {
+    // Prevent call to storage on start up, if notes
+    // are already present in chrome storage
+    if (this.previousNote.id === "LOADING" && note.id !== "NEW") {
+      this.previousNote.id = "DONE LOADING";
+      return;
+    }
+    // Prevent call to storage when simply switching note
+    if (this.fromHandleViewNote || this.fromHandleSearch) {
+      this.fromHandleViewNote = false;
+      this.fromHandleSearch = false;
+      return;
+    }
     // New note has content now
     if (note.id === "NEW" && note.content !== "") {
       note.id = this.chromeStorage.generateNoteUuid();
@@ -75,8 +112,10 @@ export class AppComponent implements OnInit {
         clearTimeout(this.typingTimeout);
       }
       this.typingTimeout = setTimeout(() => {
-        this.userIsTyping = false;
-        this.chromeStorage.storeNote(note);
+        note.lastUpdated = this.chromeStorage.generateTimeStamp();
+        this.chromeStorage.storeNote(note).then(() => {
+          this.userIsTyping = false;
+        });
       }, 400);
     }
   }
@@ -90,10 +129,12 @@ export class AppComponent implements OnInit {
         this.newNote = null;
       }
     }
-    this.notes = this.notes.filter(item => item.id !== note.id);
-    this.notesCache = this.notes;
-    this.chromeStorage.removeNote(note);
-    this.changeToDefaultActiveNote();
+
+    this.chromeStorage.removeNote(note).then(() => {
+      this.notes = this.notes.filter(item => item.id !== note.id);
+      this.notesCache = this.notes;
+      this.changeToDefaultActiveNote();
+    });
   }
 
   handleChangeNoteName(note: Note) {
@@ -105,30 +146,50 @@ export class AppComponent implements OnInit {
   }
 
   handleSearchNote(query: string) {
-    this.notes = this.notesCache;
+    this.notes = this.notesCache; // reset same reference
     if (query !== "") {
-      this.notes = this.searchNotePipe.transform(this.notes, query);
-      this.activeNote = this.notes[0];
-
-      if (!this.activeNote) {
-        console.log("No search results found");
-        if (this.notesCache[0].id !== "NEW" && this.notesCache.length > 1) {
+      this.userIsSearching = true;
+      // allow add -> search existing -> add
+      if (this.notesCache[0].id === "NEW") {
+        this.notesCache.shift();
+        this.newNote = null;
+      }
+      this.notes = this.searchNotePipe.transform(this.notes, query); // obtains new references
+      if (!this.notes[0]) {
+        // No search results found
+        if (this.notesCache[0].id !== "NEW") {
+          // Add newNote to cache
           this.newNote = { name: "", content: "", id: "NEW" };
           this.notesCache.unshift(this.newNote);
         }
-        this.notes.push(this.notesCache[0]);
-        this.activeNote = this.notes[0];
+        this.notes.push(this.notesCache[0]); // display new note option
+        this.fromHandleSearch = false; // because handleUpdateNote wont be triggered by a new note content = ''
       }
     } else {
-      this.activeNote = this.notes[0];
+      this.userIsSearching = false;
+    }
+    this.setActiveNote(this.notes[0]);
+
+    if (this.previousNote.id !== this.activeNote.id) {
+      // If active note did not change, do not trigger update
+      this.fromHandleSearch = true;
     }
   }
 
+  /**
+   * HELPER METHODS
+   */
   private changeToDefaultActiveNote() {
     if (this.notes.length === 0) {
       this.handleAddNote();
     } else {
-      this.activeNote = this.notes[0];
+      this.setActiveNote(this.notes[0]);
     }
+  }
+
+  private setActiveNote(note: Note) {
+    // dont let user spam the same note
+    this.previousNote = { ...this.activeNote };
+    this.activeNote = note;
   }
 }

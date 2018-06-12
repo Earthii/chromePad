@@ -31,7 +31,9 @@ export class SidebarComponent {
   }
 
   handleRemoveNote(note: Note) {
-    this.removeNoteEvent.emit(note);
+    if (!this.userIsTyping) {
+      this.removeNoteEvent.emit(note);
+    }
   }
 
   handleChangeNoteName(note: Note) {
