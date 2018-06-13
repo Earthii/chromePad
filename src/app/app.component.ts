@@ -67,10 +67,13 @@ export class AppComponent implements OnInit {
       this.notes.unshift(Object.assign({}, this.newNote));
 
       if (this.userIsSearching) {
+        console.log(1);
         this.notesCache.unshift(this.notes[0]);
       } else {
+        console.log(2);
         this.notesCache = this.notes;
       }
+      console.log(this.notesCache);
       this.setActiveNote(this.notes[0]);
     }
   }
@@ -125,6 +128,7 @@ export class AppComponent implements OnInit {
   handleSearchNote(query: string) {
     this.notes = this.notesCache; // reset same reference
     if (query !== "") {
+      this.userIsSearching = true;
       // allow add -> search existing -> add
       if (this.notesCache[0].id === "NEW") {
         this.notesCache.shift();

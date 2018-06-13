@@ -9,7 +9,6 @@ import { Note } from "../../models/Note";
 export class NoteComponent {
   @Input()
   set activeNote(note: Note) {
-    console.log("set active note", note);
     note.id === "NEW" ? (this.noteLoaded = true) : (this.noteLoaded = false);
     this._activeNote = note;
   }
@@ -37,10 +36,8 @@ export class NoteComponent {
   };
 
   updateNote(event) {
-    console.log("update");
     if (!this.noteLoaded) {
       this.noteLoaded = true;
-      console.log("skip");
       return;
     }
     if (event.html === null) {
