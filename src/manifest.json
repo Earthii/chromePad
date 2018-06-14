@@ -4,8 +4,13 @@
   "version": "1.1.1",
   "description":
     "A chrome extension enables users to sync their notes to chrome. App powered by an rich text editor",
+  "icons": {
+    "128": "assets/icon128.png",
+    "48": "assets/icon48.png",
+    "16": "assets/icon16.png"
+  },
   "browser_action": {
-    "default_icon": "assets/icon.png",
+    "default_icon": "assets/icon256.png",
     "default_popup": "index.html"
   },
   "content_security_policy":
