@@ -4,9 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "ng build --prod --watch",
-    "build":
-      "ng build --prod && cd ./src && cp manifest.json ./../dist/chromePad",
+    "dev": "ng build --watch",
+    "build": "ng build --prod --output-hashing none",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

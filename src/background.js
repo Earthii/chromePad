@@ -15,6 +15,6 @@ chrome.contextMenus.onClicked.addListener(clickData => {
       content: clickData.selectionText,
       id: fakeUUID.toString()
     };
-    chrome.storage.sync.set(noteData);
+    chrome.storage.sync.set(noteData, () => {});
   }
 });

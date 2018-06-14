@@ -123,6 +123,10 @@ export class AppComponent implements OnInit {
   }
 
   handleSearchNote(query: string) {
+    // Nothing at all to search
+    if (this.notesCache[0].id === "NEW" && this.notesCache.length <= 1) {
+      return;
+    }
     this.notes = this.notesCache; // reset same reference
     if (query !== "") {
       this.userIsSearching = true;
