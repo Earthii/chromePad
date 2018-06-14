@@ -30,6 +30,7 @@ export class ChromeStorageService {
   }
 
   removeNote(note: Note) {
+    console.log(note);
     return new Promise(resolve => {
       chrome.storage.sync.remove(note.id, function() {
         console.log("removed " + note.id);

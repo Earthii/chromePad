@@ -22,7 +22,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "assets": ["src/assets"],
+            "assets": ["src/assets", "src/manifest.json"],
             "styles": [
               "src/styles.scss",
               "node_modules/quill/dist/quill.snow.css"
@@ -31,6 +31,10 @@
               {
                 "input": "node_modules/quill/dist/quill.js",
                 "bundleName": "quill"
+              },
+              {
+                "input": "src/background.js",
+                "bundleName": "background"
               }
             ]
           },

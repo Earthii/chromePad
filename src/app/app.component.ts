@@ -67,13 +67,10 @@ export class AppComponent implements OnInit {
       this.notes.unshift(Object.assign({}, this.newNote));
 
       if (this.userIsSearching) {
-        console.log(1);
         this.notesCache.unshift(this.notes[0]);
       } else {
-        console.log(2);
         this.notesCache = this.notes;
       }
-      console.log(this.notesCache);
       this.setActiveNote(this.notes[0]);
     }
   }
