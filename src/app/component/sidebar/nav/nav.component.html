@@ -1,5 +1,5 @@
 <div id="nav-container">
-  <ul class="listOfNotes">
+  <ul class="listOfNotes" id="list-of-notes">
     <li class="note-container"
       [ngClass]="{'newNote': note.id === 'NEW' && activeNote == note,'activeNote': activeNote == note, 'syncingNote': userIsTyping && activeNote == note}"
       *ngFor="let note of (notes | sortNoteByDate)">

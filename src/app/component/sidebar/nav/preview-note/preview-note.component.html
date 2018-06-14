@@ -9,7 +9,7 @@
     </div>
   </div>
   <div *ngIf="active" class="controls-container">
-    <i class="remove-btn mdi" [ngClass]="removeBtnIconCssClass" (mouseenter)="toggleRemoveCssClass()" (mouseleave)="toggleRemoveCssClass()"
+    <i id="remove-note-btn" class="remove-btn mdi" [ngClass]="removeBtnIconCssClass" (mouseenter)="toggleRemoveCssClass()" (mouseleave)="toggleRemoveCssClass()"
       (click)="removeNote()">
     </i>
   </div>

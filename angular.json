@@ -25,9 +25,12 @@
             "assets": ["src/assets", "src/manifest.json"],
             "styles": [
               "src/styles.scss",
+              "node_modules/intro.js/minified/introjs.min.css",
+              "node_modules/intro.js/themes/introjs-modern.css",
               "node_modules/quill/dist/quill.snow.css"
             ],
             "scripts": [
+              "node_modules/intro.js/minified/intro.min.js",
               {
                 "input": "node_modules/quill/dist/quill.js",
                 "bundleName": "quill"
