@@ -6,6 +6,7 @@
     "start": "ng serve",
     "dev": "ng build --watch",
     "build": "ng build --prod --output-hashing none",
+    "pack": "cd dist; zip -r chromePad.zip chromePad",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
